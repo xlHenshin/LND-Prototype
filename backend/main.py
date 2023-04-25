@@ -9,7 +9,7 @@ CORS(app,resources={r"/*":{'origins':'*'}})
 
 @app.route('/shark', methods=['GET'])
 def shark():
-    return("Shark!")
+    return("HIJUEPUTA VIDA")
 
 if __name__ == "__main__":
     app.run(debug=True)
