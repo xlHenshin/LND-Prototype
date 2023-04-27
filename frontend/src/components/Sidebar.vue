@@ -17,7 +17,7 @@
             <div class="content__items">
                 <router-link class="button" to="/">
                     <img class="menuIcon" :src="todoIcon" alt="Equipo" />
-                    <span class="text">Todos</span>
+                    <span :class="{'hidden-text':!is_expanded}" class="text">Todos</span>
                 </router-link>
                 <router-link class="button" to="/">
                     <img class="menuIcon" :src="avIcon" alt="Equipo" />
@@ -81,7 +81,6 @@
 
 <script setup>
 import {ref} from 'vue'
-import { onMounted } from 'vue';
 import todoicon from '../assets/todo-icon.svg';
 import avicon from '../assets/av-icon.svg';
 import sonoroicon from '../assets/sonoro-icon.svg';
@@ -113,13 +112,16 @@ const ToggleMenu = () => {
 </script>
 
 <style lang="scss" scoped>
+
 aside{
     display: flex;
     flex-direction: column;
-    width: calc(2rem + 32px);
+    width: calc(6rem + 32px);
     min-height: 100vh;
     overflow: hidden;
     padding: 1rem;
+
+    font-family: 'Eina02', sans-serif;
 
     background-color:white;
     
@@ -137,7 +139,7 @@ aside{
 
     .menu-toggle-wrap{
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         margin-bottom: 1rem;
 
         position: relative;
@@ -166,15 +168,13 @@ aside{
         }
     }
 
-    h3, .button .text{
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
-    }
+
+    
 
     h3 {
         color: #454545;
         font-size: 0.875rem;
+        font-weight: 600;
         margin-bottom: 0.5rem;
         text-align: left;
         padding: 0.5rem 1rem;
@@ -182,66 +182,89 @@ aside{
 
     .menu{
         margin: 0 -1rem;
-        justify-content: left;
 
         .content{
             margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            &__items{
+                display: flex;
+                flex-direction: column;
+            }
         }
 
         .button{
             display: flex;
             align-items: center;
             text-decoration: none;
+            justify-content: center;
 
             padding: 0.5rem 1rem;
             transition: 0.2s ease-out;
 
             .menuIcon{
-                width: 1.5vw;
                 transition: 0.2s ease-out;
+                stroke: #454545;
+                display: flex;
+                justify-content: center;
             }
 
             .text{
                 color: #454545;
                 transition: 0.2s ease-out;
                 white-space: nowrap;
+                display: none;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+                font-size: 0.875rem;
+                font-weight: 600;
             }
 
             &:hover{
                 background-color: #454545;
 
                 .menuIcon, .text{
+                    stroke: white;
                     color: white;
                 }
             }
         }
     }
 
-    .content__items{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
     &.is-expanded{
-        width: 300px;
+        width: 275px;
 
         .menu-toggle-wrap{
             top: -3rem;
+            justify-content: flex-end;
             .menu-toggle{
                 transform: rotate(-180deg);
             }
         }
 
-        h3, .button .text{
-            opacity: 1;
-            visibility: visible;
+        .content{
+            align-items: flex-start;
         }
 
         .button{
+
+            justify-content: flex-start;
             .menuIcon{
                 margin-right: 1rem;
             }
+
+            .text{
+                display: flex;
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        .content__items{
+            margin-left: 1rem;
         }
     }
 
