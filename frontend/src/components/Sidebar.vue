@@ -10,65 +10,65 @@
         </button>
     </div>
 
-    <div class="item-groups">
+    <div class="menu">
 
         <div class="content">
             <h3>CONTENIDO</h3>
             <div class="content__items">
                 <router-link class="button" to="/">
-                    <span data-feather="radio">Todos</span>
+                    <img class="menuIcon" :src="todoIcon" alt="Equipo" />
                     <span class="text">Todos</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="video">Video</span>
+                    <img class="menuIcon" :src="avIcon" alt="Equipo" />
                     <span class="text">Audiovisuales</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="volume-2">Audio</span>
+                    <img class="menuIcon" :src="sonoroIcon" alt="Equipo" />
                     <span class="text">Sonoros</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="book-open">Texto</span>
+                    <img class="menuIcon" :src="escritosIcon" alt="Equipo" />
                     <span class="text">Escritos</span>
                 </router-link>
             </div>
         </div>
 
-        <div class="media">
+        <div class="content">
             <h3>MEDIOS</h3>
             <div class="content__items">
                 <router-link class="button" to="/">
-                    <span data-feather="radio">Todos</span>
+                    <img class="menuIcon" :src="rsIcon" alt="Valores" />
                     <span class="text">Radio Samán</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="video">Video</span>
+                    <img class="menuIcon" :src="pdcIcon" alt="Valores" />
                     <span class="text">Papel de Colgadura</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="volume-2">Audio</span>
+                    <img class="menuIcon" :src="circularIcon" alt="Valores" />
                     <span class="text">Circular</span>
                 </router-link>
             </div>
         </div>
 
-        <div class="community">
+        <div class="content">
             <h3>COMUNIDAD</h3>
             <div class="content__items">
                 <router-link class="button" to="/">
-                    <span data-feather="radio">Todos</span>
+                    <img class="menuIcon" :src="rsIcon" alt="Valores" />
                     <span class="text">Sobre nosotros</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="video">Video</span>
+                    <img class="menuIcon" :src="manifiestoIcon" alt="Manifiesto" />
                     <span class="text">Manifiesto</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="volume-2">Audio</span>
+                    <img class="menuIcon" :src="valueIcon" alt="Valores" />
                     <span class="text">Nuestros valores</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <span data-feather="book-open">Texto</span>
+                    <img class="menuIcon" :src="equipoIcon" alt="Equipo" />
                     <span class="text">Nuestro equipo</span>
                 </router-link>
             </div>
@@ -82,11 +82,27 @@
 <script setup>
 import {ref} from 'vue'
 import { onMounted } from 'vue';
-import feather from 'feather-icons';
+import todoicon from '../assets/todo-icon.svg';
+import avicon from '../assets/av-icon.svg';
+import sonoroicon from '../assets/sonoro-icon.svg';
+import escritosicon from '../assets/escritos-icon.svg';
+import radiosamanicon from '../assets/radiosaman-icon.svg';
+import pdcicon from '../assets/pdc-icon.svg';
+import circularicon from '../assets/circular-icon.svg';
+import manifesticon from '../assets/manifest-icon.svg';
+import valuesicon from '../assets/values-icon.svg';
+import equipoicon from '../assets/equipo-icon.svg';
 
-onMounted(() => {
-    feather.replace();
-});
+const todoIcon = todoicon;
+const avIcon = avicon;
+const sonoroIcon = sonoroicon;
+const escritosIcon = escritosicon;
+const rsIcon = radiosamanicon;
+const pdcIcon = pdcicon;
+const circularIcon = circularicon;
+const manifiestoIcon = manifesticon;
+const valueIcon = valuesicon;
+const equipoIcon = equipoicon;
 
 let is_expanded = ref(false)
 
@@ -105,9 +121,11 @@ aside{
     overflow: hidden;
     padding: 1rem;
 
-    background-color:beige;
+    background-color:white;
     
     transition: 0.2s ease-out;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 
     .logo{
         margin-bottom: 1rem;
@@ -148,6 +166,63 @@ aside{
         }
     }
 
+    h3, .button .text{
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+    }
+
+    h3 {
+        color: #454545;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        text-align: left;
+        padding: 0.5rem 1rem;
+    }
+
+    .menu{
+        margin: 0 -1rem;
+        justify-content: left;
+
+        .content{
+            margin-bottom: 2rem;
+        }
+
+        .button{
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+
+            padding: 0.5rem 1rem;
+            transition: 0.2s ease-out;
+
+            .menuIcon{
+                width: 1.5vw;
+                transition: 0.2s ease-out;
+            }
+
+            .text{
+                color: #454545;
+                transition: 0.2s ease-out;
+                white-space: nowrap;
+            }
+
+            &:hover{
+                background-color: #454545;
+
+                .menuIcon, .text{
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .content__items{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
     &.is-expanded{
         width: 300px;
 
@@ -155,6 +230,17 @@ aside{
             top: -3rem;
             .menu-toggle{
                 transform: rotate(-180deg);
+            }
+        }
+
+        h3, .button .text{
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .button{
+            .menuIcon{
+                margin-right: 1rem;
             }
         }
     }
