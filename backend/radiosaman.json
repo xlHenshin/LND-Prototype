@@ -1,0 +1,344 @@
+[
+    {
+        "id": "rs_001",
+        "categoria": ["Social y político","Género y Feminismo"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Revoluciones Cotidianas",
+        "likes": 0,
+        "shares": 0,
+        "views": 39,
+        "metadatos": {
+            "programa_id": "raras_pero_no_invisibles",
+            "temporada": 2,
+            "fecha": "jun 2021",
+            "duracion": "00:28:39",
+            "descripcion": "En este emisión hablaremos con una Madre, a quien su hijo la transformó en Revolucionaria, y líder comunitaria. Y quien lleva en su día a día una revolución cotidiana, quien incluso en el marco del Paro Nacional, ha salido a marchar y ha empoderado otras madres que tienen hijos o hijas que vivencian una discapacidad, para que luchen por un derecho fundamental, el derecho a la VIDA.",
+            "url": "https://open.spotify.com/episode/4NWqAmP4kXtB9cIh6V7zqv?si=8fb176cbdf44480b"
+        }
+    },
+    {
+        "id": "rs_002",
+        "categoria": ["Social y político"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "1 metro con 10",
+        "likes": 0,
+        "shares": 0,
+        "views": 15,
+        "metadatos": {
+            "programa": "raras_pero_no_invisibles",
+            "temporada": 2,
+            "fecha": "feb 2021",
+            "duracion": "00:29:38",
+            "descripcion": "Estrategias diarias para superar los obstáculos de la vida diaria en una persona con talla baja.",
+            "url": "https://open.spotify.com/episode/2NN68fKx2OCDIlI5o5ShS4?si=19601d6f935448df"
+        }
+    },
+    {
+        "id": "rs_003",
+        "categoria": ["Arte, cultura y literatura","Social y político"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "La guerra en manos pequeñas y frías",
+        "likes": 0,
+        "shares": 0,
+        "views": 35,
+        "metadatos": {
+            "programa": "voz_oscuras",
+            "temporada": 2,
+            "fecha": "abr 2021",
+            "duracion": "00:14:31",
+            "descripcion": "En la emisión de Con voz a oscuras de este miércoles, dejaremos en suspenso el relato de ciencia ficción Las metamorfosis (al que aún le faltan varias emisiones), para escuchar una historia escrita, narrada y sonorizada por Yuliana Andrea Maldonado, estudiante de Licenciatura en literatura y lengua castellana en la Universidad Icesi. Es un relato sobre la guerra y el reclutamiento de niños. Los esperamos a las 6:30 de la tarde, para que cierren los ojos y escuchen a oscuras la voz de Yuliana.",
+            "url": "https://open.spotify.com/episode/1p87AcK3upw3YlYuqYE8Yz?si=2c07329301b94e23"
+        }
+    },
+    {
+        "id": "rs_004",
+        "categoria": ["Arte, cultura y literatura","Social y político"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Las metamorfosis 1",
+        "likes": 0,
+        "shares": 0,
+        "views": 14,
+        "metadatos": {
+            "programa": "voz_oscuras",
+            "temporada": 2,
+            "fecha": "feb 2021",
+            "duracion": "00:15:01",
+            "descripcion": "En esta emisión de Con voz a oscuras se presenta la primera parte de Las metamorfosis, un relato de ciencia ficción que imagina que la pandemia actual tiene como finalidad estrechar aún más nuestro vínculo con las redes sociales  para transformar la forma actual de los seres humanos y una parte de su naturaleza. En este relato, la pandemia es una fase de una metamorfosis que no gobierna ningún ser humano y que, por el contrario, nos ha hecho creer que las redes sociales son nuestra invención.",
+            "url": "https://open.spotify.com/episode/0f2npExBXJlTpBdHJoQaGf?si=2e2c78aeba0941a5"
+        }
+    },
+    {
+        "id": "rs_005",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "La Incertidumbre como Pandemia",
+        "likes": 0,
+        "shares": 0,
+        "views": 17,
+        "metadatos": {
+            "programa": "pandemia_literaria",
+            "temporada": 1,
+            "fecha": "ago 2020",
+            "duracion": "00:30:21",
+            "descripcion": "Nathalia Zuluaga lee un fragmento de La náusea, de Jean-Paul Sartre, y propone una discusión alrededor de la incertidumbre que llega con los tiempos de crisis.",
+            "url": "https://open.spotify.com/episode/68zuNwoIbH5jB0PjYWdjHv?si=5ce77926f7444fbf"
+        }
+    },
+    {
+        "id": "rs_006",
+        "categoria": ["Género y Feminismo"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "¿Mandonas?: estereotipos y violencias de género",
+        "likes": 0,
+        "shares": 0,
+        "views": 20,
+        "metadatos": {
+            "programa": "hablando_duro",
+            "temporada": 1,
+            "fecha": "oct 2020",
+            "duracion": "00:30:07",
+            "descripcion": "Estaremos con Salomé Arias y la concejala Ana Erazo hablando sobre los estereotipos que orbitan alrededor de las mujeres en espacios de toma de decisión, también, estaremos cuestionando y visibilizando las violencias que se configuran en estos espacios. ¿Cuáles son los retos para las mujeres en los espacios de toma de decisión? ¿Cuáles son los efectos materiales de la legislación que busca generar igualdad en estos espacios?",
+            "url": "https://open.spotify.com/episode/4FX4SXVAo2Z0nU3Sz8ZWUp?si=250351462048445c"
+        }
+    },
+    {
+        "id": "rs_007",
+        "categoria": ["Género y Feminismo"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Mujeres intelectuales",
+        "likes": 0,
+        "shares": 0,
+        "views": 21,
+        "metadatos": {
+            "programa": "hablando_duro",
+            "temporada": 1,
+            "fecha": "ago 2020",
+            "duracion": "00:29:49",
+            "descripcion": "En nuestra emisión de hablando duro estaremos con Ana María Agredo y Maria Elena González para hablar de Mujeres intelectuales. Qué se entiende por intelectual y cómo definir a una mujer como intelectual. La categoria intelectual, ademas de ser eurocentrica y generalmente definida en terminos masculinos, ¿podemos aplicarla para el estudio de las mujeres?",
+            "url": "https://open.spotify.com/episode/2XCfcLdsGJxGpR3Oj7Hhw6?si=08029d2ca2f1448f"
+        }
+    },
+    {
+        "id": "rs_008",
+        "categoria":[ "Género y Feminismo","Social y político"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Yo no soy machista porque soy gay: machismo y misoginia en la comunidad LGBTIQ+",
+        "likes": 0,
+        "shares": 0,
+        "views": 45,
+        "metadatos": {
+            "programa": "hablando_duro",
+            "temporada": 1,
+            "fecha": "ago 2020",
+            "duracion": "00:29:49",
+            "descripcion": "En esta emisión hablaremos junto a nuestro invitado del machismo y la misoginia en la comunidad LGBTIQ+, hablaremos sobre las formas en la que están presentes dentro de la comunidad y también, sobre las razones por las cuales no se discute ni se reflexionan sobre dichos comportamientos.",
+            "url": "https://open.spotify.com/episode/1knjZNpEoCE6nxzoBd98FS?si=68abe93694864abf"
+        }
+    },
+    {
+        "id": "rs_009",
+        "categoria": ["Social y político"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Geografías de la muerte: análisis sobre lo que pasa al oriente de Cali",
+        "likes": 0,
+        "shares": 0,
+        "views": 12,
+        "metadatos": {
+            "programa": "la_sala",
+            "temporada": 1,
+            "fecha": "ago 2020",
+            "duracion": "00:25:44",
+            "descripcion": "Vamos a desglosar cómo se configuran los barrios del distrito de Agua blanca desde una perspectiva geográfica, histórica, sociológica y política, lo que nos permitirá entender el trasfondo de los fenómenos sociales que actualmente se presentan al oriente de la ciudad.",
+            "url": "https://open.spotify.com/episode/52U9tTUGGDaBKgMyG8vblc?si=4e84544ee369407b"
+        }
+    },
+    {
+        "id": "rs_010",
+        "categoria": ["Arte, cultura y literatura","Social y político"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "K-popers: comunidades digitales y activismo",
+        "likes": 0,
+        "shares": 0,
+        "views": 15,
+        "metadatos": {
+            "programa": "la_sala",
+            "temporada": 2,
+            "fecha": "jun 2021",
+            "duracion": "00:31:57",
+            "descripcion": "Hoy en La Sala conversaremos sobre K-popers, sus intereses, formas de agrupación y el papel que han jugado como activistas digitales en la coyuntura actual que vive Colombia.",
+            "url": "https://open.spotify.com/episode/52AMVP9qAMkkaSP6Gf1pmu?si=5b40721b81f94f5f"
+        }
+    },
+    {
+        "id": "rs_011",
+        "categoria": ["Deportes"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Lionel Messi ¿Se queda?",
+        "likes": 0,
+        "shares": 0,
+        "views": 4,
+        "metadatos": {
+            "programa": "11_titulares",
+            "temporada": 1,
+            "fecha": "sept 2020",
+            "duracion": "00:30:11",
+            "descripcion": "La historia no podía terminar mal, y tanto Messi como el Barcelona lo sabían. La novela ha llegado a su fin y después de diez días de alta tensión y especulaciones sobre lo que sucedería con el astro argentino, finalmente los aficionados blaugranas podrán respirar. Messi se queda. En este episodio abarcaremos todo lo referente a la situación actual de Lionel Messi, su relación con Josep Bartomeu y el manejo que se esta dando actualmente a la institución catalana.",
+            "url": "https://open.spotify.com/episode/6TDHBniXmfkhT6d6gph57g?si=-o9kTn_ZTQOgqbWJ1IU0dg"
+        }
+    },
+    {
+        "id": "rs_012",
+        "categoria": ["Deportes"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Futbol y Finanzas",
+        "likes": 0,
+        "shares": 0,
+        "views": 3,
+        "metadatos": {
+            "programa": "11_titulares",
+            "temporada": 1,
+            "fecha": "mar 2021",
+            "duracion": "00:31:40",
+            "descripcion": "En esta emisión hablaremos de cómo se han visto afectadas las finanzas de algunos equipos y selecciones nacionales a causa de la pandemia y las estrategias utilizadas para sobrellevar esta crisis de económica.",
+            "url": "https://open.spotify.com/episode/2QuXORbKhW3nqWixXKm7DF?si=5938bf87da0c44bf"
+        }
+    },
+    {
+        "id": "rs_013",
+        "categoria": ["Social y político", "Género y Feminismo", "Comunicación"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Mercadeo político y participación de las mujeres en la política",
+        "likes": 0,
+        "shares": 0,
+        "views": 14,
+        "metadatos": {
+            "programa": "cosmo_politik",
+            "temporada": 1,
+            "fecha": "sept 2020",
+            "duracion": "00:46:12",
+            "descripcion": "¿Cómo ha cambiado hacer campañas políticas a partir de la mayor participación de las mujeres en la política? ¿Qué enseñanzas nos dejan estas nuevas estrategias de comunicación y mercadeo político? Los obstáculos y las dinámicas a las que se enfrentan las mujeres en la política en Colombia y el mundo.",
+            "url": "https://open.spotify.com/episode/4ylVSn1XYbI731fSFYMMSm?si=4a5ea0f9c86b4982"
+        }
+    },
+    {
+        "id": "rs_014",
+        "categoria": ["Deportes"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Dopaje: un problema en el deporte",
+        "likes": 0,
+        "shares": 0,
+        "views": 18,
+        "metadatos": {
+            "programa": "cosmo_politik",
+            "temporada": 1,
+            "fecha": "ago 2020",
+            "duracion": "00:45:19",
+            "descripcion": "Dopaje: un problema en el deporte",
+            "url": "https://open.spotify.com/episode/1yzLE3144a4ewFLBpGb8qT?si=d2aaaf2ace7843e0"
+        }
+    },
+    {
+        "id": "rs_015",
+        "categoria": ["Género y Feminismo","Arte, cultura y literatura"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Una habitación para escribir: escritura femenina en Cali",
+        "likes": 0,
+        "shares": 0,
+        "views": 18,
+        "metadatos": {
+            "programa": "ciudad_mujeres",
+            "temporada": 1,
+            "fecha": "sept 2020",
+            "duracion": "00:37:08",
+            "descripcion": "Vera Carvajal es una escritora caleña que se ha dedicado a tener un espacio permanente de escritura en femenina. Conversamos como ella sobre su labor, lo que implica escribir en femenino y el trabajo de “crianza en la palabra” que desarrolla con mujeres de la ciudad.",
+            "url": "https://open.spotify.com/episode/1WJWFmR5ecRBU7EUVHJRjG?si=de9926b5d6cc4603"
+        }
+    },
+    {
+        "id": "rs_016",
+        "categoria": ["Género y Feminismo","Comunicación"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Mujeres, Estereotipos y Medios de Comunicación",
+        "likes": 0,
+        "shares": 0,
+        "views": 10,
+        "metadatos": {
+            "programa": "ciudad_mujeres",
+            "temporada": 1,
+            "fecha": "ago 2020",
+            "duracion": "00:43:09",
+            "descripcion": "En el marco de la ciudad tienen lugar un montón de fenómenos de los que los espacios físicos no dan cuenta. Con eso en mente, en el programa de la noche de hoy hablaremos sobre la construcción de los estereotipos de mujer a través de los medios de comunicación. Estereotipos que terminan repercutiendo, queramos o no, en nuestra vida y por supuesto, en la vida de la ciudad. Nuestra invitada nos contará su experiencia personal y reflexionará junto a nosotras acerca de todo lo que esto implica.",
+            "url": "https://open.spotify.com/episode/5LGzwn4HfMrfUJxvSu9Ual?si=4774ac32516344de"
+        }
+    },
+    {
+        "id": "rs_017",
+        "categoria": ["Educación"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "El desarrollo del pensamiento científico: diálogo interdisciplinario",
+        "likes": 0,
+        "shares": 0,
+        "views": 11,
+        "metadatos": {
+            "programa": "charlando_clio",
+            "temporada": 1,
+            "fecha": "oct 2020",
+            "duracion": "00:37:54",
+            "descripcion": "Programa desarrollado por el curso de Psicología Genética Experimental, que aborda el pensamiento de Jean Piaget y la pregunta acerca de ¿Cómo se pasa de un conocimiento más elemental a uno más avanzado? Esta vez se dialoga con el profesor Hernán sobre los cambios en los aprendizajes de sus estudiantes en el ámbito universitario.",
+            "url": "https://open.spotify.com/episode/2bKrltACc2RFpb1O6sRlDa?si=6ff9cae9c4b047de"
+        }
+    },
+    {
+        "id": "rs_018",
+        "categoria": ["Educación"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Retos y aprendizajes de la Educación en tiempos de pandemia",
+        "likes": 0,
+        "shares": 0,
+        "views": 20,
+        "metadatos": {
+            "programa": "charlando_clio",
+            "temporada": 1,
+            "fecha": "sept 2020",
+            "duracion": "00:41:08",
+            "descripcion": "Conversación sobre retos y aprendizajes de la Educación en tiempos de pandemia con la educadora Alba Lucía Londoño, quien nos contará desde su experiencia de más de 30 años en el sector público. Actualmente trabaja en primaria, en la comuna 20, zona de ladera.",
+            "url": "https://open.spotify.com/episode/374ElIqfouYZldpzDCHWYC?si=7339289a52234c0c"
+        }
+    },
+    {
+        "id": "rs_019",
+        "categoria": ["Educación"],
+        "tipo": "sonoro",
+        "medio": "rs",
+        "titulo": "Educación en tiempos de pandemia",
+        "likes": 0,
+        "shares": 0,
+        "views": 18,
+        "metadatos": {
+            "programa": "charlando_clio",
+            "temporada": 1,
+            "fecha": "sept 2020",
+            "duracion": "00:40:48",
+            "descripcion": "En esta sesión continuaremos nuestras conversaciones con docentes, en este caso con Socorro, sobre la educación en tiempos de pandemia.",
+            "url": "https://open.spotify.com/episode/5j59eKOq3LGTgjuteyfryf?si=57794f29a1cc4fa2"
+        }
+    }
+]
