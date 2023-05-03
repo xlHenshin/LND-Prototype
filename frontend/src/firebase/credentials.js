@@ -1,4 +1,4 @@
-const firebaseConfig = {
+const firebaseCredentials = {
     apiKey: "AIzaSyAPhiXT_ld3cznw3UkAVHSiK55Vi9wRigc",
     authDomain: "lnd-pdg.firebaseapp.com",
     databaseURL: "https://lnd-pdg-default-rtdb.firebaseio.com",

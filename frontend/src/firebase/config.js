@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import firebaseCredentials from "./credentials";
+import firebaseCredentials from "./credentials.js";
 
 const app = initializeApp(firebaseCredentials);
 
