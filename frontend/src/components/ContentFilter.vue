@@ -1,46 +1,24 @@
 <template>
     <form class="form">
-        <div>
+        <div class="form__title">
             <h1>Contenidos</h1>
             <span>Todos</span>
         </div>
 
-        <div>
+        <div class="form__filters">
             <h3>Filtra los contenidos por categorías</h3>
-
             <div>
-                <label>
-                    <input type="checkbox" value="socpol" v-model="selectedCategories">
-                    <span>Social y Político</span>
-                </label>
-                <label>
-                    <input type="checkbox" value="entretenimiento" v-model="selectedCategories">
-                    <span>Entretenimiento</span>
-                </label>
-                <label>
-                    <input type="checkbox" value="educacion" v-model="selectedCategories">
-                    <span>Educación</span>
-                </label>
-                <label>
-                    <input type="checkbox" value="genfem" v-model="selectedCategories">
-                    <span>Género y Feminismo</span>
-                </label>
-                <label>
-                    <input type="checkbox" value="deportes" v-model="selectedCategories">
-                    <span>Deportes</span>
-                </label>
-                <label>
-                    <input type="checkbox" value="comunicacion" v-model="selectedCategories">
-                    <span>Comunicación</span>
-                </label>
-                <label>
-                    <input type="checkbox" value="tech" v-model="selectedCategories">
-                    <span>Tecnología</span>
-                </label>
-                <label>
-                    <input type="checkbox" value="arteCulLit" v-model="selectedCategories">
-                    <span>Arte, Cultura y Literatura</span>
-                </label>
+                <select v-model="selectedCategory">
+                <option disabled value="">Selecciona una categoría</option>
+                <option value="socpol">Social y Político</option>
+                <option value="entretenimiento">Entretenimiento</option>
+                <option value="educacion">Educación</option>
+                <option value="genfem">Género y Feminismo</option>
+                <option value="deportes">Deportes</option>
+                <option value="comunicacion">Comunicación</option>
+                <option value="tech">Tecnología</option>
+                <option value="arteCulLit">Arte, Cultura y Literatura</option>
+                </select>
             </div>
         </div>
 
@@ -48,30 +26,32 @@
             <h3>Ordenar</h3>
 
             <div>
-                <button>
-                    <span>Más vistos</span>
-                </button>
-
-                <button>
-                    <span>Más gustados</span>
-                </button>
-
-                <button>
-                    <span>Más compartidos</span>
-                </button>
+                <select v-model="selectedCategory">
+                    <option disabled value="">Ordenar por...</option>
+                    <option value="masVistos">Más vistos</option>
+                    <option value="masGustados">Más gustados</option>
+                    <option value="masCompartidos">Más compartidos</option>
+                </select>
             </div>
         </div>
     </form>
 </template>
 
 <script>
-
+export default {
+  data() {
+    return {
+      selectedCategory: "",
+      selectedOrder: "",
+    };
+  },
+};
 </script>
 
 <style lang="scss">
 
     .form{
-        padding: 0 9.5rem 0 9.5rem;
+        padding: 8vw 10vw 4vw 10vw;
     }
 
 </style>

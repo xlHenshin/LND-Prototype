@@ -108,7 +108,7 @@ const ToggleMenu = () => {
 aside{
     display: flex;
     flex-direction: column;
-    width: calc(8rem + 32px);
+    width: calc(6vw + 32px);
     height: calc(100vh - 2rem);
     box-sizing: border-box;
     padding: 1rem;
@@ -167,7 +167,7 @@ aside{
 
     h3 {
         color: #454545;
-        font-size: 0.875rem;
+        font-size: 0.8vw;
         font-weight: 600;
         margin-bottom: 0.5rem;
         text-align: left;
@@ -218,7 +218,7 @@ aside{
                 opacity: 0;
                 visibility: hidden;
                 transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
-                font-size: 0.875rem;
+                font-size: 0.8vw;
                 font-weight: 600;
             }
 
@@ -234,7 +234,7 @@ aside{
     }
 
     &.is-expanded{
-        width: 18vw;
+        width: calc(16vw + 32px);
 
         .menu-toggle-wrap{
             top: -3rem;
@@ -246,6 +246,7 @@ aside{
 
         .content{
             align-items: flex-start;
+            width: 100%;
         }
 
         .button{
@@ -268,6 +269,7 @@ aside{
 
         .content__items{
             margin-left: 1rem;
+            width: 100%;
         }
     }
 
