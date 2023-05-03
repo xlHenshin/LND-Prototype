@@ -5,6 +5,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Eina02';
+  src: url('../assets/fonts/Eina02-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 $eina02-fontfamily: 'Eina02', sans-serif;
   
   /* A continuación, puedes agregar estilos globales para utilizar la fuente */

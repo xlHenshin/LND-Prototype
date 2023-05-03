@@ -10,25 +10,25 @@
         </button>
     </div>
 
-    <div class="menu">
+    <div class="menu custom-scrollbar">
 
         <div class="content">
             <h3>CONTENIDO</h3>
             <div class="content__items">
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="todoIcon" alt="Equipo" />
+                    <TodoSvg class="menuIcon"/>
                     <span :class="{'hidden-text':!is_expanded}" class="text">Todos</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="avIcon" alt="Equipo" />
+                    <AvSvg class="menuIcon"/>
                     <span class="text">Audiovisuales</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="sonoroIcon" alt="Equipo" />
+                    <SonoroSvg class="menuIcon"/>
                     <span class="text">Sonoros</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="escritosIcon" alt="Equipo" />
+                    <EscritosSvg class="menuIcon"/>
                     <span class="text">Escritos</span>
                 </router-link>
             </div>
@@ -38,15 +38,15 @@
             <h3>MEDIOS</h3>
             <div class="content__items">
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="rsIcon" alt="Valores" />
+                    <RsSvg class="menuIcon"/>
                     <span class="text">Radio Samán</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="pdcIcon" alt="Valores" />
+                    <PdcSvg class="menuIcon"/>
                     <span class="text">Papel de Colgadura</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="circularIcon" alt="Valores" />
+                    <CircularSvg class="menuIcon"/>
                     <span class="text">Circular</span>
                 </router-link>
             </div>
@@ -56,19 +56,19 @@
             <h3>COMUNIDAD</h3>
             <div class="content__items">
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="rsIcon" alt="Valores" />
+                    <EscritosSvg class="menuIcon"/>
                     <span class="text">Sobre nosotros</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="manifiestoIcon" alt="Manifiesto" />
+                    <ManifestSvg class="menuIcon"/>
                     <span class="text">Manifiesto</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="valueIcon" alt="Valores" />
+                    <ValoresSvg class="menuIcon"/>
                     <span class="text">Nuestros valores</span>
                 </router-link>
                 <router-link class="button" to="/">
-                    <img class="menuIcon" :src="equipoIcon" alt="Equipo" />
+                    <EquipoSvg class="menuIcon"/>
                     <span class="text">Nuestro equipo</span>
                 </router-link>
             </div>
@@ -80,46 +80,40 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import todoicon from '../assets/todo-icon.svg';
-import avicon from '../assets/av-icon.svg';
-import sonoroicon from '../assets/sonoro-icon.svg';
-import escritosicon from '../assets/escritos-icon.svg';
-import radiosamanicon from '../assets/radiosaman-icon.svg';
-import pdcicon from '../assets/pdc-icon.svg';
-import circularicon from '../assets/circular-icon.svg';
-import manifesticon from '../assets/manifest-icon.svg';
-import valuesicon from '../assets/values-icon.svg';
-import equipoicon from '../assets/equipo-icon.svg';
+import {ref, defineEmits} from 'vue'
+import AvSvg from '../assets/icons/AvSvg.vue'
+import CircularSvg from '../assets/icons/CircularSvg.vue'
+import EquipoSvg from '../assets/icons/EquipoSvg.vue'
+import EscritosSvg from '../assets/icons/EscritosSvg.vue'
+import ManifestSvg from '../assets/icons/ManifestSvg.vue'
+import PdcSvg from '../assets/icons/PdcSvg.vue'
+import RsSvg from '../assets/icons/RsSvg.vue'
+import SonoroSvg from '../assets/icons/SonoroSvg.vue'
+import TodoSvg from '../assets/icons/TodoSvg.vue'
+import ValoresSvg from '../assets/icons/ValoresSvg.vue'
 
-const todoIcon = todoicon;
-const avIcon = avicon;
-const sonoroIcon = sonoroicon;
-const escritosIcon = escritosicon;
-const rsIcon = radiosamanicon;
-const pdcIcon = pdcicon;
-const circularIcon = circularicon;
-const manifiestoIcon = manifesticon;
-const valueIcon = valuesicon;
-const equipoIcon = equipoicon;
+const emitToggle = defineEmits(["toggle"]);
 
 let is_expanded = ref(false)
 
 const ToggleMenu = () => {
     is_expanded.value = !is_expanded.value
+    emitToggle("toggle", is_expanded.value);
 }
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 aside{
     display: flex;
     flex-direction: column;
-    width: calc(6rem + 32px);
-    min-height: 100vh;
-    overflow: hidden;
+    width: calc(8rem + 32px);
+    height: calc(100vh - 2rem);
+    box-sizing: border-box;
     padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 
     font-family: 'Eina02', sans-serif;
 
@@ -181,7 +175,13 @@ aside{
     }
 
     .menu{
-        margin: 0 -1rem;
+        max-width: 100%;
+        
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
 
         .content{
             margin-bottom: 2rem;
@@ -206,7 +206,6 @@ aside{
 
             .menuIcon{
                 transition: 0.2s ease-out;
-                stroke: #454545;
                 display: flex;
                 justify-content: center;
             }
@@ -235,7 +234,7 @@ aside{
     }
 
     &.is-expanded{
-        width: 275px;
+        width: 18vw;
 
         .menu-toggle-wrap{
             top: -3rem;
@@ -250,10 +249,14 @@ aside{
         }
 
         .button{
-
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             justify-content: flex-start;
             .menuIcon{
                 margin-right: 1rem;
+                fill: white;
             }
 
             .text{
@@ -273,4 +276,19 @@ aside{
         z-index: 99;
     }
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 </style>
