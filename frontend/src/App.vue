@@ -31,7 +31,6 @@ export default {
 <style lang="scss">
 .app {
   background-color: #EDEDED;
-  display: flex;
 }
 
 .sidebar {
