@@ -29,7 +29,7 @@
             :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
             >
             <swiper-slide
-                v-for="content in cContent"
+                v-for="content in topTrendingCrContent"
                 :key="content.id"
             >
                 <CrCard :content="content" />
@@ -64,7 +64,7 @@
                         <option value="masCompartidos">Más compartidos</option>
                     </select>
                 </div>
-                <button @click="resetFilters">Reiniciar filtros</button>
+                <button @click="onResetFilters">Reiniciar filtros</button>
             </div>
 
             <div class="main__audiovisualContent">
@@ -80,7 +80,7 @@
                 :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
                 >
                 <swiper-slide
-                    v-for="content in cContent"
+                    v-for="content in audiovisualContent"
                     :key="content.id"
                 >
                     <CrCard :content="content" />
@@ -103,7 +103,7 @@
                 :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
                 >
                 <swiper-slide
-                    v-for="content in cContent"
+                    v-for="content in sonoroContent"
                     :key="content.id"
                 >
                     <CrCard :content="content" />
@@ -126,7 +126,7 @@
                 :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
                 >
                 <swiper-slide
-                    v-for="content in cContent"
+                    v-for="content in argContent"
                     :key="content.id"
                 >
                     <CrCard :content="content" />
@@ -148,7 +148,7 @@
                 :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
                 >
                 <swiper-slide
-                    v-for="content in cContent"
+                    v-for="content in narContent"
                     :key="content.id"
                 >
                     <CrCard :content="content" />
@@ -170,7 +170,7 @@
                 :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
                 >
                 <swiper-slide
-                    v-for="content in cContent"
+                    v-for="content in perContent"
                     :key="content.id"
                 >
                     <CrCard :content="content" />
@@ -193,22 +193,68 @@ import CrCard from "../components/cards/CrCard.vue";
 export default {
     computed: {
         ...mapStores(useContentStore),
+        topTrendingCrContent() {
+            return this.contentStore.getTopTrendingCrContent;
+            
+        },
         cContent(){
             return this.contentStore.getCircularContent;
+        },
+        audiovisualContent(){
+            return this.contentStore.getAudiovisualContent;
+        },
+        sonoroContent(){
+            return this.contentStore.getSonoroContent;
         }
+        ,
+        argContent(){
+            return this.contentStore.getArgContent;
+        }
+        ,
+        narContent(){
+            return this.contentStore.getNarContent;
+        }
+        ,
+        perContent(){
+            return this.contentStore.getPerContent;
+        }
+    },
+    mounted() {
+        this.contentStore.getCrData()
     },
     components:{
         CrCard,
         Swiper,
         SwiperSlide,
     },
+    methods: {
+        onCategoryChange(category) {
+            this.contentStore.updateContentList(this.selectedCategory, this.selectedOrder);
+            this.isShowingNewContent = !category && !this.selectedOrder;
+        },
+
+        onOrderChange(order) {
+            this.contentStore.updateContentList(this.selectedCategory, this.selectedOrder);
+            this.isShowingNewContent = !this.selectedCategory && !order;
+        },
+
+        onResetFilters() {
+            this.selectedCategory = "";
+            this.selectedOrder = "";
+            this.contentStore.updateContentList(null, null);
+            this.isShowingNewContent = true;
+        },
+    },
     data() {
-    return {
-        swiperOptions: {
-            modules: [Pagination, Navigation],
-        }
-    };
-  }
+        return {
+            swiperOptions: {
+                modules: [Pagination, Navigation],
+            },
+            selectedCategory: "",
+            selectedOrder: "",
+            isShowingNewContent: true,
+        };
+    }
 }
 </script>
 

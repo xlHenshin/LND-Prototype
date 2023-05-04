@@ -7,10 +7,24 @@ export const useContentStore = defineStore('content', {
         allRsContent: [],
         allCrContent: [],
         allProgramasContent: [],
+        allAvContent: [],
+        allSrContent: [],
+        allArgContent: [],
+        allNarContent: [],
+        allPerContent: [],
+
         radioSamanContent: [],
         circularContent: [],
         programasContent: [],
+
         topTrendingRsContent: [],
+        topTrendingCrContent: [],
+
+        audiovisualContent: [],
+        sonoroContent: [],
+        argContent: [],
+        narContent: [],
+        perContent: [],
         selectedType: 'all',
     }),
 
@@ -18,7 +32,13 @@ export const useContentStore = defineStore('content', {
         getRadioSamanContent: (state) =>[...state.radioSamanContent],
         getCircularContent: (state) =>[...state.circularContent],
         getTopTrendingRsContent: (state) => [...state.topTrendingRsContent],
+        getTopTrendingCrContent: (state) => [...state.topTrendingCrContent],
         getProgramasContent: (state) => [...state.programasContent],
+        getAudiovisualContent: (state) => [...state.audiovisualContent],
+        getSonoroContent: (state) => [...state.sonoroContent],
+        getArgContent: (state) => [...state.argContent],
+        getNarContent: (state) => [...state.narContent],
+        getPerContent: (state) => [...state.perContent],
     },
 
     mutators: {
@@ -57,6 +77,18 @@ export const useContentStore = defineStore('content', {
             const cContent = contentSnapshot.docs.map(doc => doc.data());
             this.circularContent = this.sortByDateContent(cContent)
             this.allCrContent = [...this.circularContent];
+
+            this.audiovisualContent = filterContentByMediaType(this.circularContent, 'audiovisual');
+            this.allAvContent = [...this.audiovisualContent];
+            this.sonoroContent = filterContentByMediaType(this.circularContent, 'sonoro');
+            this.allSrContent = [...this.sonoroContent];
+            this.argContent = filterWrittenContentBySubcategory(filterContentByMediaType(this.circularContent, 'escrito'), 'arg');
+            this.allArgContent = [...this.argContent];
+            this.narContent = filterWrittenContentBySubcategory(filterContentByMediaType(this.circularContent, 'escrito'), 'nar');
+            this.allNarContent = [...this.narContent];
+            this.perContent = filterWrittenContentBySubcategory(filterContentByMediaType(this.circularContent, 'escrito'), 'per');
+            this.allPerContent = [...this.perContent];
+            this.topTrendingCrContent = getTopTrendingContents(this.allCrContent);
         },
 
         setSelectedType(type) {
@@ -82,12 +114,24 @@ export const useContentStore = defineStore('content', {
             let filteredRsContent = this.filterContentByType(this.allRsContent);
             let filteredCContent = this.filterContentByType(this.allCrContent);
             let filteredProgramasContent = this.filterContentByType(this.allProgramasContent);
+
+            let filteredAudiovisualContent = this.filterContentByType(this.allAvContent);
+            let filteredSonoroContent = this.filterContentByType(this.allSrContent);
+            let filteredArgContent = this.filterContentByType(this.allArgContent);
+            let filteredNarContent = this.filterContentByType(this.allNarContent);
+            let filteredPerContent = this.filterContentByType(this.allPerContent);
         
             // Filtra los contenidos según la categoría seleccionada (si se proporciona).
             if (category) {
                 filteredRsContent = filteredRsContent.filter(content => content.categoria.some(cat => cat === category));
                 filteredCContent = filteredCContent.filter(content => content.categoria.some(cat => cat === category));
                 filteredProgramasContent = filteredProgramasContent.filter(content => content.categoria.some(cat => cat === category));
+
+                filteredAudiovisualContent = filteredAudiovisualContent.filter(content => content.categoria.some(cat => cat === category));
+                filteredSonoroContent = filteredSonoroContent.filter(content => content.categoria.some(cat => cat === category));
+                filteredArgContent = filteredArgContent.filter(content => content.categoria.some(cat => cat === category));
+                filteredNarContent = filteredNarContent.filter(content => content.categoria.some(cat => cat === category));
+                filteredPerContent = filteredPerContent.filter(content => content.categoria.some(cat => cat === category));
             }
         
             // Ordena los contenidos según el criterio seleccionado.
@@ -103,11 +147,23 @@ export const useContentStore = defineStore('content', {
         
             filteredRsContent.sort(sortFunction);
             filteredCContent.sort(sortFunction);
+
+            filteredAudiovisualContent.sort(sortFunction);
+            filteredSonoroContent.sort(sortFunction);
+            filteredArgContent.sort(sortFunction);
+            filteredNarContent.sort(sortFunction);
+            filteredPerContent.sort(sortFunction);
         
             // Limita la lista a los primeros 9 contenidos.
             this.radioSamanContent = filteredRsContent.slice(0, 9);
             this.circularContent = filteredCContent.slice(0, 9);
             this.programasContent = filteredProgramasContent;
+
+            this.audiovisualContent = filteredAudiovisualContent;
+            this.sonoroContent = filteredSonoroContent;
+            this.argContent = filteredArgContent;
+            this.narContent = filteredNarContent;
+            this.perContent = filteredPerContent;
         },
         
     }
@@ -133,10 +189,17 @@ function calculateTrendScore(content) {
 }
 
 function getTopTrendingContents(contents) {
-    console.log("Contenidos recibidos en getTopTrendingContents:", contents);
     const sortedContents = [...contents].sort((a, b) => {
         return calculateTrendScore(b) - calculateTrendScore(a);
     });
 
     return sortedContents.slice(0, 9);
+}
+
+function filterContentByMediaType(contentArray, mediaType) {
+    return contentArray.filter(content => content.tipo === mediaType);
+}
+
+function filterWrittenContentBySubcategory(contentArray, subcategory) {
+    return contentArray.filter(content => content.metadatos.subcategoria === subcategory);
 }
