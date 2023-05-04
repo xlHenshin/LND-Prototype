@@ -3,7 +3,7 @@
     <Sidebar class="sidebar" @toggle="handleSidebarToggle"/>
 
     <div :class="{'main-content': true, 'sidebar-expanded': isSidebarExpanded}">
-      <router-view/>
+      <router-view @filter-type="onFilterType"/>
     </div>
   </div>
 </template>

@@ -4,11 +4,12 @@
     <ContentFilter
       @category-change="onCategoryChange"
       @order-change="onOrderChange"
+      @reset-filters="onResetFilters"
     />
 
     <div class="main__rs">
       <h3>Radio Samán</h3>
-      <h2>Nuevos episodios</h2>
+      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
       <div class="main__cards">
         <swiper
           class="swiper"
@@ -34,7 +35,7 @@
 
     <div class="main__c">
       <h3>Circular</h3>
-      <h2>Nuevos contenido</h2>
+      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
       <div class="main__cards">
         <swiper
           class="swiper"
@@ -62,6 +63,7 @@
 </template>
 
 <script>
+import { inject } from 'vue';
 import { mapStores } from "pinia";
 import { useContentStore } from "@/stores/contentStore";
 import ContentFilter from "../components/ContentFilter.vue";
@@ -85,7 +87,11 @@ export default {
   mounted() {
     this.contentStore.getRsData()
     this.contentStore.getCrData()
+    this.emitter = inject('emitter');
+    this.emitter.$on('filter-type', this.onFilterType);
+    console.log(this.emitter)
   },
+  
 
   components:{
         ContentFilter,
@@ -97,11 +103,25 @@ export default {
     onCategoryChange(category) {
       this.selectedCategory = category;
       this.contentStore.updateContentList(this.selectedCategory, this.selectedOrder);
+      this.isShowingNewContent = !category && !this.selectedOrder;
     },
 
     onOrderChange(order) {
       this.selectedOrder = order;
       this.contentStore.updateContentList(this.selectedCategory, this.selectedOrder);
+      this.isShowingNewContent = !this.selectedCategory && !order;
+    },
+
+    onResetFilters() {
+      this.selectedCategory = null;
+      this.selectedOrder = null;
+      this.contentStore.updateContentList(this.selectedCategory, this.selectedOrder);
+      this.isShowingNewContent = true;
+    },
+    onFilterType(type) {
+      console.log('Received filter-type event:', type);
+      this.selectedType = type;
+      // Lógica para aplicar los filtros según el tipo seleccionado
     },
   },
   data() {
@@ -110,7 +130,8 @@ export default {
         modules: [Pagination, Navigation],
       },
       selectedCategory: null,
-      selectedOrder: null
+      selectedOrder: null,
+      isShowingNewContent: true,
     };
   }
 }

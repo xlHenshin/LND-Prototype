@@ -15,19 +15,31 @@
         <div class="content">
             <h3>CONTENIDO</h3>
             <div class="content__items">
-                <router-link class="button" to="/">
+                <router-link 
+                class="button"
+                to="/search"
+                @click.native="onTypeSelected('all')">
                     <TodoSvg class="menuIcon"/>
                     <span :class="{'hidden-text':!is_expanded}" class="text">Todos</span>
                 </router-link>
-                <router-link class="button" to="/">
+                <router-link
+                class="button"
+                to="/search"
+                @click.native="onTypeSelected('audiovisual')">
                     <AvSvg class="menuIcon"/>
                     <span class="text">Audiovisuales</span>
                 </router-link>
-                <router-link class="button" to="/">
+                <router-link
+                class="button"
+                to="/search"
+                @click.native="onTypeSelected('sonoro')">
                     <SonoroSvg class="menuIcon"/>
                     <span class="text">Sonoros</span>
                 </router-link>
-                <router-link class="button" to="/">
+                <router-link
+                class="button"
+                to="/search"
+                @click.native="onTypeSelected('escrito')">
                     <EscritosSvg class="menuIcon"/>
                     <span class="text">Escritos</span>
                 </router-link>
@@ -37,7 +49,7 @@
         <div class="content">
             <h3>MEDIOS</h3>
             <div class="content__items">
-                <router-link class="button" to="/">
+                <router-link class="button" to="/radiosaman">
                     <RsSvg class="menuIcon"/>
                     <span class="text">Radio Samán</span>
                 </router-link>
@@ -45,7 +57,7 @@
                     <PdcSvg class="menuIcon"/>
                     <span class="text">Papel de Colgadura</span>
                 </router-link>
-                <router-link class="button" to="/">
+                <router-link class="button" to="/circular">
                     <CircularSvg class="menuIcon"/>
                     <span class="text">Circular</span>
                 </router-link>
@@ -79,28 +91,51 @@
   </aside>
 </template>
 
-<script setup>
-import {ref, defineEmits} from 'vue'
-import AvSvg from '../assets/icons/AvSvg.vue'
-import CircularSvg from '../assets/icons/CircularSvg.vue'
-import EquipoSvg from '../assets/icons/EquipoSvg.vue'
-import EscritosSvg from '../assets/icons/EscritosSvg.vue'
-import ManifestSvg from '../assets/icons/ManifestSvg.vue'
-import PdcSvg from '../assets/icons/PdcSvg.vue'
-import RsSvg from '../assets/icons/RsSvg.vue'
-import SonoroSvg from '../assets/icons/SonoroSvg.vue'
-import TodoSvg from '../assets/icons/TodoSvg.vue'
-import ValoresSvg from '../assets/icons/ValoresSvg.vue'
+<script>
+import { inject } from 'vue';
+import AvSvg from '../assets/icons/AvSvg.vue';
+import CircularSvg from '../assets/icons/CircularSvg.vue';
+import EquipoSvg from '../assets/icons/EquipoSvg.vue';
+import EscritosSvg from '../assets/icons/EscritosSvg.vue';
+import ManifestSvg from '../assets/icons/ManifestSvg.vue';
+import PdcSvg from '../assets/icons/PdcSvg.vue';
+import RsSvg from '../assets/icons/RsSvg.vue';
+import SonoroSvg from '../assets/icons/SonoroSvg.vue';
+import TodoSvg from '../assets/icons/TodoSvg.vue';
+import ValoresSvg from '../assets/icons/ValoresSvg.vue';
 
-const emitToggle = defineEmits(["toggle"]);
-
-let is_expanded = ref(false)
-
-const ToggleMenu = () => {
-    is_expanded.value = !is_expanded.value
-    emitToggle("toggle", is_expanded.value);
-}
-
+export default {
+  components: {
+    AvSvg,
+    CircularSvg,
+    EquipoSvg,
+    EscritosSvg,
+    ManifestSvg,
+    PdcSvg,
+    RsSvg,
+    SonoroSvg,
+    TodoSvg,
+    ValoresSvg,
+  },
+  data() {
+    return {
+      is_expanded: false,
+    };
+  },
+  methods: {
+    ToggleMenu() {
+      this.is_expanded = !this.is_expanded;
+      this.$emit("toggle", this.is_expanded);
+    },
+    onTypeSelected(type) {
+      console.log('Emitting filter-type event:', type);
+      this.$emit('filter-type', type);
+    },
+  },
+  created() {
+    this.emitter = inject('emitter');
+  },
+};
 </script>
 
 <style lang="scss">

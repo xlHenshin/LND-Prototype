@@ -29,6 +29,8 @@
                     <option value="masCompartidos">Más compartidos</option>
                 </select>
             </div>
+
+            <button @click="resetFilters">Reiniciar filtros</button>
         </div>
 
         
@@ -50,6 +52,9 @@ export default {
         },
         selectedOrder(value) {
             this.$emit("order-change", value);
+        },
+        resetFilters() {
+            this.$emit("reset-filters");
         },
     },
 };
