@@ -7,7 +7,7 @@
       <h3>Radio Samán</h3>
       <h2>Nuevos episodios</h2>
       <div class="main__cards">
-        <ContentCard/>
+        <ContentCard v-for="content in rsContent" :key="content.id" :content="content"/>
       </div>
     </div>
     

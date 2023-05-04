@@ -7,11 +7,11 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 def upload_radiosaman_data():
-    with open('radiosaman.json', 'r', encoding='utf-8') as file:
+    with open('circular.json', 'r', encoding='utf-8') as file:
         radiosaman_data = json.load(file)
 
     for content in radiosaman_data:
-        content_ref = db.collection('contenidos').document('rs').collection('contenidos_rs').document(content['id'])
+        content_ref = db.collection('contenidos').document('c').collection('contenidos_c').document(content['id'])
         content_ref.set(content)
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 [
     {
         "id": "rs_001",
-        "categoria": ["Social y político","Género y Feminismo"],
+        "categoria": ["Comunicación","Género y Feminismo"],
         "tipo": "sonoro",
         "medio": "rs",
         "titulo": "Revoluciones Cotidianas",
@@ -19,7 +19,7 @@
     },
     {
         "id": "rs_002",
-        "categoria": ["Social y político"],
+        "categoria": ["Comunicación"],
         "tipo": "sonoro",
         "medio": "rs",
         "titulo": "1 metro con 10",
@@ -145,7 +145,7 @@
     },
     {
         "id": "rs_009",
-        "categoria": ["Social y político"],
+        "categoria": ["Comunicación","Social y político"],
         "tipo": "sonoro",
         "medio": "rs",
         "titulo": "Geografías de la muerte: análisis sobre lo que pasa al oriente de Cali",
@@ -163,7 +163,7 @@
     },
     {
         "id": "rs_010",
-        "categoria": ["Arte, cultura y literatura","Social y político"],
+        "categoria": ["Comunicación","Arte, cultura y literatura"],
         "tipo": "sonoro",
         "medio": "rs",
         "titulo": "K-popers: comunidades digitales y activismo",
@@ -235,7 +235,7 @@
     },
     {
         "id": "rs_014",
-        "categoria": ["Deportes"],
+        "categoria": ["Comunicación","Deportes"],
         "tipo": "sonoro",
         "medio": "rs",
         "titulo": "Dopaje: un problema en el deporte",

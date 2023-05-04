@@ -1,20 +1,192 @@
 [
     {
         "id": "c_001",
-        "categoria": ["Social y político","Género y Feminismo"],
-        "tipo": "sonoro",
-        "medio": "rs",
-        "titulo": "Revoluciones Cotidianas",
+        "categoria": ["Entretenimiento"],
+        "tipo": "audiovisual",
+        "medio": "c",
+        "titulo": "Piedra, papel o tijera",
         "likes": 0,
         "shares": 0,
-        "views": 39,
+        "views": 0,
         "metadatos": {
-            "programa_id": "raras_pero_no_invisibles",
-            "temporada": 2,
-            "fecha": "jun 2021",
-            "duracion": "00:28:39",
-            "descripcion": "En este emisión hablaremos con una Madre, a quien su hijo la transformó en Revolucionaria, y líder comunitaria. Y quien lleva en su día a día una revolución cotidiana, quien incluso en el marco del Paro Nacional, ha salido a marchar y ha empoderado otras madres que tienen hijos o hijas que vivencian una discapacidad, para que luchen por un derecho fundamental, el derecho a la VIDA.",
-            "url": "https://open.spotify.com/episode/4NWqAmP4kXtB9cIh6V7zqv?si=8fb176cbdf44480b"
+            "fecha": "nov 2022",
+            "duracion": "00:08:12",
+            "url": "gs://lnd-pdg.appspot.com/circular/cinemateca/Presentable1.mp4"
+        }
+    },
+    {
+        "id": "c_002",
+        "categoria": ["Género y feminismo"],
+        "tipo": "audiovisual",
+        "medio": "c",
+        "titulo": "Hombres",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "fecha": "may 2022",
+            "duracion": "00:06:44",
+            "url": "gs://lnd-pdg.appspot.com/circular/cinemateca/Presentable1.mp4"
+        }
+    },
+    {
+        "id": "c_003",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "De la realidad a la ficción: Análisis de Los Ejércitos",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "arg",
+            "autor": "María José Parra Zúñiga",
+            "fecha": "nov 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/María José Parra - Ensayo Los Ejércitos.docx.pdf"
+        }
+    },
+    {
+        "id": "c_004",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "Impasse",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "arg",
+            "autor": "Santiago Nieto Aristizábal",
+            "fecha": "may 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/ensyística-SantiagoNieto. Impasse..docx.pdf"
+        }
+    },
+    {
+        "id": "c_005",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "¿Mala elección de personaje?",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "arg",
+            "autor": "Andrea Sofía Díaz Pérez",
+            "fecha": "nov 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/¿Mala elección de personaje .pdf"
+        }
+    },
+    {
+        "id": "c_006",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "Las ciudades y el olvido",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "nar",
+            "autor": "Anónimo",
+            "fecha": "nov 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/Las ciudades y el olvido.docx.pdf"
+        }
+    },
+    {
+        "id": "c_007",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "El Viejo",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "nar",
+            "autor": "Anónimo",
+            "fecha": "nov 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/1. Pierina. El viejo.docx.pdf"
+        }
+    },
+    {
+        "id": "c_008",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "De cómo se salvó Juanjo",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "nar",
+            "autor": "Charlo Daniela Escudero Rayo",
+            "fecha": "nov 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/De cómo se salvó Juanjo Corregido..docx.pdf"
+        }
+    },
+    {
+        "id": "c_009",
+        "categoria": ["Arte, cultura y literatura"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "¿ALICIA?",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "nar",
+            "autor": "Jhery Manrique Vives",
+            "fecha": "nov 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/ALICIA_Jhery Manrique Vivas.pdf"
+        }
+    },
+    {
+        "id": "c_010",
+        "categoria": ["Comunicación"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "Granadas y Platillos Voladores",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "per",
+            "autor": "Mariana Pulecio Díaz",
+            "fecha": "nov 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/Perfil Vicky Acosta (1).docx.pdf"
+        }
+    },
+    {
+        "id": "c_011",
+        "categoria": ["Social y político"],
+        "tipo": "escrito",
+        "medio": "c",
+        "titulo": "Que los prejuicios no te nuble la mente: el nacimiento de una cultura canábica",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "per",
+            "autor": "Isabella López y Natalia Ordóñez",
+            "fecha": "may 2022",
+            "url": "gs://lnd-pdg.appspot.com/circular/escritura/periodística-Artículo Que los prejuicios no te nublen la mente.docx.pdf"
+        }
+    },
+    {
+        "id": "c_012",
+        "categoria": ["Entretenimiento"],
+        "tipo": "sonoro",
+        "medio": "c",
+        "titulo": "La última melodía: capítulo 2",
+        "likes": 0,
+        "shares": 0,
+        "views": 0,
+        "metadatos": {
+            "subcategoria": "rad",
+            "fecha": "may 2022",
+            "duracion": "00:09:10",
+            "url": "gs://lnd-pdg.appspot.com/circular/sonoro/Radiodrama-La Última Melodía Cap. 2.mp3"
         }
     }
 ]

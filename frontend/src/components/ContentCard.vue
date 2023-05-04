@@ -2,13 +2,15 @@
     <div class="card mb-4 border-0 content-card">
         <div class="card-body">
             <div class="d-flex justify-content-between">
-                <span class="date">Junio 22</span>
-                <span class="badge rounded-pill">#Deporte</span>
+                <span class="date">{{ content.metadatos.fecha }}</span>
+                <template v-for="(category, index) in content.categoria" :key="index">
+                    <span class="badge rounded-pill">#{{ category }}</span>
+                </template>
             </div>
             <span>Radio Samán</span>
-            <h4 class="card-subtitle">Nombre del episodio</h4>
+            <h4 class="card-subtitle">{{ content.titulo }}</h4>
             <p class="card-text">Nombre del programa</p>
-            <p class="card-text">Temporada 1</p>
+            <p class="card-text">Temporada {{ content.metadatos.temporada }}</p>
         </div>
         <div class="card-img-bottom">
             <img src="../assets/images/radiosamancard.jpg" alt="" class="card-image">
