@@ -7,13 +7,12 @@
                     <span class="badge rounded-pill">#{{ category }}</span>
                 </template>
             </div>
-            <span>Radio Samán</span>
+            <span>Circular</span>
             <h4 class="card-subtitle">{{ content.titulo }}</h4>
-            <p class="card-text">Nombre del programa</p>
-            <p class="card-text">Temporada {{ content.metadatos.temporada }}</p>
+            <p class="card-text">{{ content.tipo }}</p>
         </div>
         <div class="card-img-bottom">
-            <img src="../assets/images/radiosamancard.jpg" alt="" class="card-image">
+            <img src="@/assets/images/radiosamancard.jpg" alt="" class="card-image">
         </div>
     </div>
   </template>

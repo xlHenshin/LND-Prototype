@@ -6,27 +6,23 @@
         </div>
 
         <div class="form__filters">
-            <h3>Filtra los contenidos por categorías</h3>
-            <div>
-                <select v-model="selectedCategory">
-                <option disabled value="">Selecciona una categoría</option>
-                <option value="socpol">Social y Político</option>
-                <option value="entretenimiento">Entretenimiento</option>
-                <option value="educacion">Educación</option>
-                <option value="genfem">Género y Feminismo</option>
-                <option value="deportes">Deportes</option>
-                <option value="comunicacion">Comunicación</option>
-                <option value="tech">Tecnología</option>
-                <option value="arteCulLit">Arte, Cultura y Literatura</option>
+            <div class="form__filter">
+                <h3>Filtra los contenidos por categorías</h3>
+                <select v-model="selectedCategory" @change="onCategoryChange">
+                    <option disabled value="">Selecciona una categoría</option>
+                    <option value="Social y Político">Social y Político</option>
+                    <option value="Entretenimiento">Entretenimiento</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Género y Feminismo">Género y Feminismo</option>
+                    <option value="Deportes">Deportes</option>
+                    <option value="Comunicación">Comunicación</option>
+                    <option value="Tecnología">Tecnología</option>
+                    <option value="Arte, cultura y literatura">Arte, Cultura y Literatura</option>
                 </select>
             </div>
-        </div>
-
-        <div>
-            <h3>Ordenar</h3>
-
-            <div>
-                <select v-model="selectedCategory">
+            <div class="form__filter">
+                <h3>Ordenar</h3>
+                <select v-model="selectedOrder" @change="onOrderChange">
                     <option disabled value="">Ordenar por...</option>
                     <option value="masVistos">Más vistos</option>
                     <option value="masGustados">Más gustados</option>
@@ -34,17 +30,28 @@
                 </select>
             </div>
         </div>
+
+        
     </form>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      selectedCategory: "",
-      selectedOrder: "",
-    };
-  },
+
+    data() {
+        return {
+        selectedCategory: "",
+        selectedOrder: "",
+        };
+    },
+    watch: {
+        selectedCategory(value) {
+            this.$emit("category-change", value);
+        },
+        selectedOrder(value) {
+            this.$emit("order-change", value);
+        },
+    },
 };
 </script>
 
@@ -52,6 +59,39 @@ export default {
 
     .form{
         padding: 8vw 10vw 4vw 10vw;
+
+        &__title{
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+
+            h1{
+                font-size: 4vw;
+                font-weight: 600;
+                margin-bottom: 1.5vw;
+                margin-right: 3vw;
+            }
+
+            span {
+                font-size: 1.5vw;
+                font-weight: normal;
+            }
+        }
+
+        &__filters{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+        }
+        &__filter{
+            width: 50%;
+
+            h3 {
+                font-weight: 600;
+                font-size: 1vw;
+            }
+        }
     }
 
 </style>
