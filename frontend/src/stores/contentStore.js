@@ -58,7 +58,6 @@ export const useContentStore = defineStore('content', {
     
             // Añade esta línea para asignar los contenidos más populares a topTrendingRsContent
             this.topTrendingRsContent = getTopTrendingContents(this.allRsContent);
-            console.log(this.topTrendingRsContent)
         },
 
         async getProgramasData(){
@@ -68,6 +67,20 @@ export const useContentStore = defineStore('content', {
             const programasContent = contentSnapshot.docs.map(doc => doc.data());
             this.programasContent = programasContent;
             this.allProgramasContent = [...programasContent]; // Agrega esta línea
+        },
+
+        getContentById(id) {
+            console.log("Searching for episode with ID:", id);
+            const allContent = [
+                ...this.allRsContent,
+                ...this.allCrContent,
+            ];
+            console.log("All content:", allContent);
+            const filteredEpisodes = allContent.filter(
+                (content) => id.toLowerCase() === content.id.toLowerCase()
+            );
+            console.log("Filtered episodes:", filteredEpisodes);
+            return filteredEpisodes.length > 0 ? { ...filteredEpisodes[0] } : null;
         },
 
         async getCrData(){

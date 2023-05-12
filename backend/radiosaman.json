@@ -342,3 +342,30 @@
         }
     }
 ]
+
+{
+    "id": "rs_011",
+    "Social y Político": {
+        "views": (numero de vistas que le ha dado a todos los contenidos de esta categoría),
+        "shares": (numero de veces que ha compartido los contenidos de esta categoría),
+        "likes": (numero de likes que le ha dado a todos los contenidos de esta categoría),
+        "score": (score de cuanto le gusta esta categoría)
+    },
+    "Deportes": {
+        "views": (numero de vistas que le ha dado a todos los contenidos de esta categoría),
+        "shares": (numero de veces que ha compartido los contenidos de esta categoría),
+        "likes": (numero de likes que le ha dado a todos los contenidos de esta categoría),
+        "score": (score de cuanto le gusta esta categoría)
+    },
+    (así con todas las categorías)
+},
+
+{
+    "userid": "123",
+    "registered": true (acá se valida si el usuario está registrado),
+    "idcontent": "rs_011" (un ejemplo),
+    "date": (fecha en la que se registró la interacción),
+    "liked": true (acá se valida si el usuario dio like o no),
+    "shared": true (acá se valida si el usuario dio compartió o no),
+    "viewed": true (acá se valida si el usuario vio o no el producto),
+},

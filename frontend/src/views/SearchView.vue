@@ -23,10 +23,10 @@
             v-for="content in rsContent"
             :key="content.id"
           >
-            <RsCard :content="content" />
+            <router-link :to="`/content/${content.id}`">
+              <RsCard :content="content" />
+            </router-link>
           </swiper-slide>
-          <div class="swiper-button-prev">‹</div>
-          <div class="swiper-button-next">›</div>
         </swiper>
 
       </div>
@@ -49,10 +49,10 @@
             v-for="content in cContent"
             :key="content.id"
           >
-            <CrCard :content="content" />
+            <router-link :to="`/content/${content.id}`">
+              <CrCard :content="content" />
+            </router-link>
           </swiper-slide>
-          <div class="swiper-button-prev">‹</div>
-          <div class="swiper-button-next">›</div>
         </swiper>
 
       </div>
@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import { inject } from 'vue';
 import { mapStores } from "pinia";
 import { useContentStore } from "@/stores/contentStore";
 import ContentFilter from "../components/ContentFilter.vue";
@@ -87,9 +86,6 @@ export default {
   mounted() {
     this.contentStore.getRsData()
     this.contentStore.getCrData()
-    this.emitter = inject('emitter');
-    this.emitter.$on('filter-type', this.onFilterType);
-    console.log(this.emitter)
   },
   
 

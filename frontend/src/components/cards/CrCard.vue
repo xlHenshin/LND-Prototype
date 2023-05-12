@@ -3,9 +3,9 @@
         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <span class="date">{{ content.metadatos.fecha }}</span>
-                <template v-for="(category, index) in content.categoria" :key="index">
+                <div v-for="(category, index) in content.categoria" :key="index">
                     <span class="badge rounded-pill">#{{ category }}</span>
-                </template>
+                </div>
             </div>
             <span>Circular</span>
             <h4 class="card-subtitle">{{ content.titulo }}</h4>
