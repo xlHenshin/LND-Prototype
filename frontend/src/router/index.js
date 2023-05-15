@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useContentStore } from "@/stores/contentStore";
 import HomeView from "../views/HomeView.vue";
 import SearchView from "../views/SearchView.vue";
 import CircularView from "../views/CircularView.vue";
@@ -42,6 +43,24 @@ const routes = [
     path: '/content/:id',
     name: 'Content',
     component: ContentView,
+    beforeEnter: async (to, from, next) => {
+      const contentId = to.params.id;
+      const contentStore = useContentStore();
+      
+      // Cargar los datos si no están disponibles
+      if (contentStore.allRsContent.length === 0) {
+        await contentStore.getRsData();
+      }
+
+      // Comprobar si el contenido existe
+      const content = contentStore.getContentById(contentId);
+      if (content) {
+        next();
+      } else {
+        // Redirigir a una página de error 404 personalizada o a otra página si el contenido no se encuentra
+        next({ name: "Home" });  // Debes definir esta ruta en caso de que el contenido no exista
+      }
+    },
   },
 ];
 

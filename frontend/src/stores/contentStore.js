@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { db } from '@/firebase/config'
+import { db, storage } from '@/firebase/config'
 import { collection, getDocs } from 'firebase/firestore'
+import { ref, getDownloadURL } from "firebase/storage";
 
 export const useContentStore = defineStore('content', {
     state: () => ({
@@ -102,6 +103,17 @@ export const useContentStore = defineStore('content', {
             this.perContent = filterWrittenContentBySubcategory(filterContentByMediaType(this.circularContent, 'escrito'), 'per');
             this.allPerContent = [...this.perContent];
             this.topTrendingCrContent = getTopTrendingContents(this.allCrContent);
+        },
+
+        async fetchMediaUrl(path) {
+            const storageRef = ref(storage, path);
+            try {
+                const url = await getDownloadURL(storageRef);
+                return url;
+            } catch (error) {
+                console.log(error);
+                return null;
+            }
         },
 
         setSelectedType(type) {
