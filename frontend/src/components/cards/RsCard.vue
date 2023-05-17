@@ -1,18 +1,20 @@
 <template>
-    <div class="card mb-4 border-0 content-card">
-        <div class="card-body">
-            <div class="d-flex justify-content-between">
+    <div class="card">
+        <div class="card__body">
+            <div class="top">
                 <span class="date">{{ content.metadatos.fecha }}</span>
-                <div v-for="(category, index) in content.categoria" :key="index">
+                <div class="categoryContainer">
+                  <div class="category" v-for="(category, index) in content.categoria" :key="index">
                     <span class="badge rounded-pill">#{{ category }}</span>
+                  </div>
                 </div>
             </div>
-            <span>Radio Samán</span>
-            <h4 class="card-subtitle">{{ content.titulo }}</h4>
-            <p class="card-text">Nombre del programa</p>
-            <p class="card-text">Temporada {{ content.metadatos.temporada }}</p>
+            <span class="mediaTitle">Radio Samán</span>
+            <h4 class="contentTitle">{{ content.titulo }}</h4>
+            <p class="programTitle">Nombre del programa</p>
+            <p class="season">Temporada {{ content.metadatos.temporada }}</p>
         </div>
-        <div class="card-img-bottom">
+        <div class="card__img">
             <img src="@/assets/images/radiosamancard.jpg" alt="" class="card-image">
         </div>
     </div>
@@ -29,30 +31,75 @@
   };
   </script>
   
-<style lang="scss">
+<style scoped lang="scss">
 
+.card{
+  width: 22vw;
+  height: 22vw;
+  &__body{
+    display: flex;
+    flex-direction: column;
+    padding: 1vw 1vw;
+
+    .top{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1vw;
+      width: 100%;
+      .date{
+        font-weight: 300;
+        font-size: 1vw;
+        color: black;
+      }
+      .categoryContainer{
+        display: flex;
+        flex-direction: row;
+        
+        .category{
+          display: inline-block;
+          .badge{
+            margin-right: 1vw;
+            background-color: #3c3c3c;
+            color: white;
+            font-size: .8vw;
+            font-weight: normal;
+            &:hover{
+                cursor: pointer;
+            }
+          }
+        }
+        
+      }
+      .mediaTitle{
+        font-weight: 300;
+        font-size: .8vw;
+        color: black;
+      }
+
+      .mediaTitle, .contentTitle, .programTitle, .season{
+        color: black;
+      }
+    }
+  }
+  &__img{
+    width: 100%;
+    height: 12vw;
+    padding: 1vw;
+    overflow: hidden;
+
+    .card-image {
+      width: 100%;
+      border-radius: 0.5vw;
+      object-fit: cover;
+    }
+  }
+}
 .badge {
   background-color: #3c3c3c; // Cambia el color de fondo
   color: #ffffff; // Cambia el color del texto
   font-size: 0.8rem; // Cambia el tamaño de fuente
   padding: 0.2rem 0.5rem; // Ajusta el relleno
 }
-
-  .content-card {
-    width: 22.4vw;
-  }
-  
-  .card-img-bottom {
-    width: 100%;
-    height: 15vw;
-    padding: 1vw;
-    overflow: hidden; // Agrega esta línea para recortar cualquier contenido que exceda los límites del contenedor
-  }
-
-  .card-image {
-    width: 100%; // Cambia esto para que la imagen ocupe todo el ancho del contenedor
-    height: 100%; // Cambia esto para que la imagen ocupe toda la altura del contenedor
-    border-radius: 0.5vw;
-    object-fit: cover;
-  }
 </style>

@@ -7,6 +7,7 @@ import RadioSamanView from "../views/RadioSamanView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ContentView from "../views/ContentView.vue";
+import ProfileView from "../views/ProfileView.vue";
 
 const routes = [
   {
@@ -38,6 +39,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: RegisterView,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: ProfileView,
   },
   {
     path: '/content/:id',

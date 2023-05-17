@@ -10,17 +10,17 @@ export const useAuthenticationStore = defineStore("authentication", {
         userInfo: {}
     }),
     actions: {
-            signIn(email, password) {
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                const user = userCredential.user;
-                console.log('Logged User: ', user)
-                })
-                .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                alert(error)
-                });
+        signIn(email, password) {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+            const user = userCredential.user;
+            console.log('Logged User: ', user)
+            })
+            .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(error)
+            });
         },
         logOut(){
             signOut(auth)

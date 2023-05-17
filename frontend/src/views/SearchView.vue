@@ -10,7 +10,7 @@
     <div class="main__rs">
       <h3>Radio Samán</h3>
       <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
-      <div class="main__cards">
+      <div class="cards">
         <swiper
           class="swiper"
           :space-between="30"
@@ -23,7 +23,7 @@
             v-for="content in rsContent"
             :key="content.id"
           >
-            <router-link :to="`/content/${content.id}`">
+            <router-link class="routerlink" :to="`/content/${content.id}`">
               <RsCard :content="content" />
             </router-link>
           </swiper-slide>
@@ -150,25 +150,8 @@ export default {
       width: 100%;
     }
   }
-
-  .swiper-button-prev, .swiper-button-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  border: none;
-  font-size: 1.5rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.swiper-button-prev {
-  left: 0;
-}
-
-.swiper-button-next {
-  right: 0;
-}
+  .routerlink{
+    text-decoration: none;
+  }
 
 </style>

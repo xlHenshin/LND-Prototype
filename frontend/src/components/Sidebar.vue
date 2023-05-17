@@ -1,13 +1,20 @@
 <template>
-  <aside :class="`${is_expanded && 'is-expanded'}`">
+<aside :class="`${is_expanded && 'is-expanded'}`">
     <div class="logo">
-        <img src="../assets/logo.png" alt="Vue">
-    </div>
-
-    <div class="menu-toggle-wrap">
-        <button class="menu-toggle" @click="ToggleMenu">
-            <span class="material-icons">keyboard_double_arrow_right</span>
-        </button>
+        <div class="lndBrand">
+            <div class="lndLogo">
+                <img src="../assets/lndlogo.png" alt="Vue">
+            </div>
+            <div class="lndTitle">
+                <h2 class="lndTitle__top">Laboratorio</h2>
+                <h2 class="lndTitle__bottom">Narrativas Digitales</h2>
+            </div>
+        </div>
+        <div class="menu-toggle-wrap">
+            <button class="menu-toggle" @click="ToggleMenu">
+                <span class="material-icons">chevron_right</span>
+            </button>
+        </div>
     </div>
 
     <div class="menu custom-scrollbar">
@@ -15,31 +22,19 @@
         <div class="content">
             <h3>CONTENIDO</h3>
             <div class="content__items">
-                <router-link 
-                class="button"
-                to="/search"
-                @click.native="onTypeSelected('all')">
+                <router-link class="button" to="/search">
                     <TodoSvg class="menuIcon"/>
-                    <span :class="{'hidden-text':!is_expanded}" class="text">Todos</span>
+                    <span class="text">Todos</span>
                 </router-link>
-                <router-link
-                class="button"
-                to="/search"
-                @click.native="onTypeSelected('audiovisual')">
+                <router-link class="button" to="/search">
                     <AvSvg class="menuIcon"/>
                     <span class="text">Audiovisuales</span>
                 </router-link>
-                <router-link
-                class="button"
-                to="/search"
-                @click.native="onTypeSelected('sonoro')">
+                <router-link class="button" to="/search">
                     <SonoroSvg class="menuIcon"/>
                     <span class="text">Sonoros</span>
                 </router-link>
-                <router-link
-                class="button"
-                to="/search"
-                @click.native="onTypeSelected('escrito')">
+                <router-link class="button" to="/search">
                     <EscritosSvg class="menuIcon"/>
                     <span class="text">Escritos</span>
                 </router-link>
@@ -87,8 +82,23 @@
         </div>
 
     </div>
-    
-  </aside>
+
+        <div class="user">
+            <div class="loggedUser">
+                <div class="userIcon">
+                    <img src="../assets/images/userimg.png" alt="">
+                </div>
+                <div class="userData" :class="{ 'is-expanded': is_expanded }">
+                    <span>NombreUsuario</span>
+                    <span>Correo</span>
+                </div>
+                <button class="userOptions" :class="{ 'is-expanded': is_expanded }">.</button>
+            </div>
+            <div class="notLoggedUser">
+                <button>Iniciar sesión</button>
+            </div>
+        </div>
+    </aside>
 </template>
 
 <script>
@@ -127,10 +137,6 @@ export default {
       this.is_expanded = !this.is_expanded;
       this.$emit("toggle", this.is_expanded);
     },
-    onTypeSelected(type) {
-      console.log('Emitting filter-type event:', type);
-      this.$emit('filter-type', type);
-    },
   },
   created() {
     this.emitter = inject('emitter');
@@ -138,7 +144,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 aside{
     display: flex;
@@ -160,10 +166,38 @@ aside{
 
     .logo{
         margin-bottom: 1rem;
+        display: flex;
+        flex-direction: row;
 
-        img{
-            width: 2rem;
+        .lndBrand{
+            display: flex;
+            flex-direction: row;
+            .lndLogo{
+                width: 4rem;
+                overflow: hidden;
+                margin-right: 1vw;
+                img{
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+            .lndTitle{
+                font-family: 'Raleway', sans-serif;
+                &__top{
+                    font-weight: normal;
+                    font-size: 0.875rem;
+                }
+
+                &__bottom{
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    white-space: nowrap;
+                }
+            }
+            
         }
+
+        
     }
 
     .menu-toggle-wrap{
@@ -172,7 +206,6 @@ aside{
         margin-bottom: 1rem;
 
         position: relative;
-        top: 0;
         transition: 0.2s ease-out;
 
         .menu-toggle{
@@ -268,11 +301,65 @@ aside{
         }
     }
 
+    .user{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        align-items: center;
+        margin-top: auto;
+        .loggedUser{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            .userIcon {
+                width: 50px;
+                height: 50px;
+                overflow: hidden;
+                margin-right: 1vw;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+            .userData {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #454545;
+                transition: 0.2s ease-out;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+
+                span {
+                    margin-bottom: 0.3vw;
+                    font-size: 1vw;
+                    font-weight: 600;
+                }
+            }
+
+            .userOptions {
+                color: #454545;
+                transition: 0.2s ease-out;
+                white-space: nowrap;
+                display: none;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+                font-size: 0.8vw;
+                font-weight: 600;
+            }
+        }
+    }
     &.is-expanded{
         width: calc(16vw + 32px);
 
         .menu-toggle-wrap{
-            top: -3rem;
             justify-content: flex-end;
             .menu-toggle{
                 transform: rotate(-180deg);
@@ -305,6 +392,17 @@ aside{
         .content__items{
             margin-left: 1rem;
             width: 100%;
+        }
+        .userData {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .userOptions {
+            display: block;
+            opacity: 1;
+            visibility: visible;
         }
     }
 
