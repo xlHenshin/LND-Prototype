@@ -9,18 +9,21 @@ export const useAuthenticationStore = defineStore("authentication", {
         user:null,
         userInfo: {}
     }),
+    getters: {
+        getUserInfo: (state) =>[state.userInfo]
+    },
     actions: {
         signIn(email, password) {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-            const user = userCredential.user;
-            console.log('Logged User: ', user)
-            })
-            .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(error)
-            });
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                const user = userCredential.user;
+                console.log('Logged User: ', user)
+                })
+                .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(error)
+                });
         },
         logOut(){
             signOut(auth)
@@ -43,28 +46,20 @@ export const useAuthenticationStore = defineStore("authentication", {
             })
         },
         async getUserData(){
-            const collectionRef = collection(db, "users");
-                const { docs } = await getDocs(collectionRef);
-    
-                const userData = docs.map((doc) => {
-                    return {
-                    id: doc.id,
-                    ...doc.data()
-                    };
-                });
-                console.log(auth.currentUser.uid)
-                let currentUser
-                for (let index = 0; index < userData.length; index++) {
-                    if(auth.currentUser.email === userData[index].email){
-                    currentUser = userData[index]
-                    }
+            const collectionRef = collection(db, "/users/users_list/registered_list");
+            const contentSnapshot = await getDocs(collectionRef);
+
+            const userData = contentSnapshot.docs.map(doc => doc.data());
+            console.log('userlist: ', userData)
+            let currentUser
+            for (let index = 0; index < userData.length; index++) {
+                if(auth.currentUser.email === userData[index].email){
+                currentUser = userData[index]
                 }
-                this.userInfo=currentUser
-                console.log(this.userInfo)
+            }
+            this.userInfo = currentUser
         },
-        getData(){
-            return this.userInfo
-        },
+        
         async newUserAwait(username, email, password, favCategoria) {
                 try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password)

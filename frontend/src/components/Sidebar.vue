@@ -2,19 +2,17 @@
 <aside :class="`${is_expanded && 'is-expanded'}`">
     <div class="logo">
         <div class="lndBrand">
-            <div class="lndLogo">
-                <img src="../assets/lndlogo.png" alt="Vue">
-            </div>
+            <router-link to="/" class="lndLogo">
+                <img src="../assets/lndlogo.png" alt="LND">
+            </router-link>
             <div class="lndTitle">
                 <h2 class="lndTitle__top">Laboratorio</h2>
                 <h2 class="lndTitle__bottom">Narrativas Digitales</h2>
             </div>
         </div>
-        <div class="menu-toggle-wrap">
-            <button class="menu-toggle" @click="ToggleMenu">
-                <span class="material-icons">chevron_right</span>
-            </button>
-        </div>
+        <button class="arrow" @click="ToggleMenu">
+            <span class="material-icons" v-text="is_expanded ? 'chevron_left' : 'chevron_right'"></span>
+        </button>
     </div>
 
     <div class="menu custom-scrollbar">
@@ -85,18 +83,24 @@
 
         <div class="user">
             <div class="loggedUser">
-                <div class="userIcon">
-                    <img src="../assets/images/userimg.png" alt="">
+                <div class="userInfo">
+                    <div class="userInfo__icon">
+                        <img src="../assets/images/userimg.png" alt="">
+                    </div>
+
+                    <div class="userInfo__data">
+                        <span class="username">{{userInfo[0].username}}</span>
+                        <span class="email">{{userInfo[0].email}}</span>
+                    </div>
                 </div>
-                <div class="userData" :class="{ 'is-expanded': is_expanded }">
-                    <span>NombreUsuario</span>
-                    <span>Correo</span>
-                </div>
-                <button class="userOptions" :class="{ 'is-expanded': is_expanded }">.</button>
+                
+                <button class="userOptions">
+                    <span class="material-icons more">more_vert</span>
+                </button>
             </div>
-            <div class="notLoggedUser">
-                <button>Iniciar sesión</button>
-            </div>
+            <router-link class="notLoggedUser" to="/login">
+                <span>Iniciar sesión</span>
+            </router-link>
         </div>
     </aside>
 </template>
@@ -113,34 +117,45 @@ import RsSvg from '../assets/icons/RsSvg.vue';
 import SonoroSvg from '../assets/icons/SonoroSvg.vue';
 import TodoSvg from '../assets/icons/TodoSvg.vue';
 import ValoresSvg from '../assets/icons/ValoresSvg.vue';
+import { mapStores } from 'pinia';
+import { useAuthenticationStore } from '../stores/authentication';
 
 export default {
-  components: {
-    AvSvg,
-    CircularSvg,
-    EquipoSvg,
-    EscritosSvg,
-    ManifestSvg,
-    PdcSvg,
-    RsSvg,
-    SonoroSvg,
-    TodoSvg,
-    ValoresSvg,
-  },
-  data() {
-    return {
-      is_expanded: false,
-    };
-  },
-  methods: {
-    ToggleMenu() {
-      this.is_expanded = !this.is_expanded;
-      this.$emit("toggle", this.is_expanded);
+    components: {
+        AvSvg,
+        CircularSvg,
+        EquipoSvg,
+        EscritosSvg,
+        ManifestSvg,
+        PdcSvg,
+        RsSvg,
+        SonoroSvg,
+        TodoSvg,
+        ValoresSvg,
     },
-  },
-  created() {
-    this.emitter = inject('emitter');
-  },
+    data() {
+        return {
+        is_expanded: false,
+        };
+    },
+    computed: {
+        ...mapStores(useAuthenticationStore),
+        userInfo(){
+            return this.authenticationStore.getUserInfo;
+        }
+    },
+    async mounted() {
+        await this.authenticationStore.getUserData()
+    },
+    methods: {
+        ToggleMenu() {
+            this.is_expanded = !this.is_expanded;
+            this.$emit("toggle", this.is_expanded);
+        },
+    },
+    created() {
+        this.emitter = inject('emitter');
+    },
 };
 </script>
 
@@ -152,7 +167,7 @@ aside{
     width: calc(6vw + 32px);
     height: calc(100vh - 2rem);
     box-sizing: border-box;
-    padding: 1rem;
+    padding: 3rem 1rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
 
@@ -167,71 +182,61 @@ aside{
     .logo{
         margin-bottom: 1rem;
         display: flex;
-        flex-direction: row;
-
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
         .lndBrand{
+            justify-content: center;
             display: flex;
             flex-direction: row;
+            margin-bottom: 1rem;
             .lndLogo{
                 width: 4rem;
                 overflow: hidden;
-                margin-right: 1vw;
                 img{
                     width: 100%;
                     object-fit: cover;
                 }
             }
-            .lndTitle{
-                font-family: 'Raleway', sans-serif;
-                &__top{
-                    font-weight: normal;
-                    font-size: 0.875rem;
-                }
-
-                &__bottom{
-                    font-weight: 600;
-                    font-size: 0.875rem;
-                    white-space: nowrap;
-                }
-            }
-            
         }
-
-        
     }
 
-    .menu-toggle-wrap{
-        display: flex;
+    .lndTitle{
+        margin-left: 1rem;
+        font-family: 'Raleway', sans-serif;
+        color: #6546FC;
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        flex-direction: column;
         justify-content: center;
-        margin-bottom: 1rem;
+        &__top{
+            font-weight: normal;
+            font-size: 1rem;
+        }
 
-        position: relative;
-        transition: 0.2s ease-out;
-
-        .menu-toggle{
-            transition: 0.2s ease-out;
-            border: none;
-            background: none;
-            cursor: pointer;
-            outline: none;
-
-            .material-icons{
-                font-size: 2rem;
-                color: black;
-                transition: 0.2s ease-out;
-            }
-
-            &:hover{
-                .material-icons{
-                    color: blue;
-                    transform: translateX(0.5rem);
-                }
-            }
+        &__bottom{
+            margin-top: -.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            white-space: nowrap;
         }
     }
 
-
-    
+    .arrow{
+        width: 2rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        outline: none;
+        .material-icons{
+            width: 100%;
+            font-size: 2rem;
+            color: #757575;
+        }
+    }
 
     h3 {
         color: #454545;
@@ -247,7 +252,7 @@ aside{
         
         overflow-y: auto;
         overflow-x: hidden;
-        height: 100%;
+        height: 32rem;
         display: flex;
         flex-direction: column;
 
@@ -306,64 +311,88 @@ aside{
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        align-items: center;
         margin-top: auto;
-        .loggedUser{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 100%;
-            .userIcon {
-                width: 50px;
-                height: 50px;
-                overflow: hidden;
-                margin-right: 1vw;
+    }
 
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+    .loggedUser{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .userInfo{
+        display: flex;
+        flex-direction: row;
+
+        &__icon{
+            width: 3.5rem;
+            overflow: hidden;
+
+            img{
+                width: 100%;
+                object-fit: cover;
             }
-            .userData {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                color: #454545;
-                transition: 0.2s ease-out;
-                white-space: nowrap;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
 
-                span {
-                    margin-bottom: 0.3vw;
-                    font-size: 1vw;
-                    font-weight: 600;
-                }
+        &__data{
+            display: none;
+            margin-left: 1rem;
+            color: #454545;
+            transition: 0.2s ease-out;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+
+            span{
+                font-size: 1rem;
             }
 
-            .userOptions {
-                color: #454545;
-                transition: 0.2s ease-out;
-                white-space: nowrap;
-                display: none;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
-                font-size: 0.8vw;
+            .username{
                 font-weight: 600;
             }
+
+            .email{
+                font-weight: normal;
+            }
+        }
+    }
+    .userOptions {
+        color: #454545;
+        height: 1.5rem;
+        align-items: center;
+        transition: 0.2s ease-out;
+        white-space: nowrap;
+        display: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        outline: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+
+        .material-icons{
+            width: 100%;
+            font-size: 1.5rem;
+            color: #757575;
+            transition: 0.2s ease-out;
         }
     }
     &.is-expanded{
         width: calc(16vw + 32px);
 
-        .menu-toggle-wrap{
-            justify-content: flex-end;
-            .menu-toggle{
-                transform: rotate(-180deg);
-            }
+        .logo{
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        .lndTitle{
+            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
 
         .content{
@@ -393,14 +422,18 @@ aside{
             margin-left: 1rem;
             width: 100%;
         }
-        .userData {
-            display: block;
+        .loggedUser{
+            justify-content: space-between;
+        }
+        .userInfo__data {
+            display: flex;
             opacity: 1;
             visibility: visible;
+            flex-direction: column;
         }
 
         .userOptions {
-            display: block;
+            display: flex;
             opacity: 1;
             visibility: visible;
         }

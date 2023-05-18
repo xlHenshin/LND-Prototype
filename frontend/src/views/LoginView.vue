@@ -7,15 +7,15 @@
             <div class="main__form data">
                 <div>
                     <span>Correo electrónico</span>
-                    <input type="email">
+                    <input type="email" v-model="email">
                 </div>
                 <div>
                     <span>Contraseña</span>
-                    <input type="password">
+                    <input type="password" v-model="email">
                 </div>
             </div>
 
-            <button class="main__button">
+            <button @click="signIn" class="main__button">
                 <span>Iniciar Sesión</span>
             </button>
         </div>
@@ -30,8 +30,24 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia'
+import { useAuthenticationStore } from '../stores/authentication'
 export default {
-
+    computed: {
+        ...mapStores(useAuthenticationStore),
+        userIsLogged(){
+                return this.authenticationStore.user !== null
+            }
+    },
+    methods: {
+        signIn(){
+            this.authenticationStore.signIn(this.email, this.password)
+            this.authenticationStore.getUserData()
+        }
+    },
+    mounted(){
+        console.log(auth.currentUser)
+    },
 }
 </script>
 
