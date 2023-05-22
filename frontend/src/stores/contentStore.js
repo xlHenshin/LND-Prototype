@@ -76,7 +76,6 @@ export const useContentStore = defineStore('content', {
                 ...this.allRsContent,
                 ...this.allCrContent,
             ];
-            console.log("All content:", allContent);
             const filteredEpisodes = allContent.filter(
                 (content) => id.toLowerCase() === content.id.toLowerCase()
             );

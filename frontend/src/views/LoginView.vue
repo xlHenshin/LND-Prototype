@@ -6,17 +6,17 @@
 
             <div class="main__form data">
                 <div>
-                    <span>Correo electrónico</span>
+                    <label>Correo electrónico</label>
                     <input type="email" v-model="email">
                 </div>
                 <div>
-                    <span>Contraseña</span>
-                    <input type="password" v-model="email">
+                    <label>Contraseña</label>
+                    <input type="password" v-model="password" autocomplete="current-password">
                 </div>
             </div>
 
             <button @click="signIn" class="main__button">
-                <span>Iniciar Sesión</span>
+                <label>Iniciar Sesión</label>
             </button>
         </div>
         <div class="main__form notRegistered">
@@ -33,20 +33,27 @@
 import { mapStores } from 'pinia'
 import { useAuthenticationStore } from '../stores/authentication'
 export default {
+    data() {
+        return {
+            email: '',
+            password: '',
+        }
+    },
     computed: {
         ...mapStores(useAuthenticationStore),
         userIsLogged(){
-                return this.authenticationStore.user !== null
-            }
+            return this.authenticationStore.user !== null
+        }
     },
     methods: {
-        signIn(){
-            this.authenticationStore.signIn(this.email, this.password)
+        async signIn(){
+            await this.authenticationStore.signIn(this.email, this.password)
             this.authenticationStore.getUserData()
+            this.$router.push('/')
         }
     },
     mounted(){
-        console.log(auth.currentUser)
+        console.log(this.authenticationStore.user)
     },
 }
 </script>

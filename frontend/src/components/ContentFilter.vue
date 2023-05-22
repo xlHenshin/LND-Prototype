@@ -63,7 +63,7 @@ export default {
 <style lang="scss">
 
     .form{
-        padding: 8vw 10vw 4vw 10vw;
+        padding: 5vw 10vw 5vw 10vw;
 
         &__title{
             display: flex;

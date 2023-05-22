@@ -82,10 +82,11 @@
     </div>
 
         <div class="user">
-            <div class="loggedUser">
+            <div class="loggedUser" v-if="userIsLogged">
                 <div class="userInfo">
                     <div class="userInfo__icon">
-                        <img src="../assets/images/userimg.png" alt="">
+                        <div v-if="isImageLoading" class="loading-indicator"></div>
+                        <img v-else :src="userInfo.length > 0 && userInfo[0].url ? userInfo[0].url : defaultProfilePic" alt="Imagen de perfil" />
                     </div>
 
                     <div class="userInfo__data">
@@ -94,11 +95,15 @@
                     </div>
                 </div>
                 
-                <button class="userOptions">
+                <button class="userOptions" @click="toggleOptions">
                     <span class="material-icons more">more_vert</span>
                 </button>
+                <div class="options" v-show="optionsVisible">
+                    <router-link class="options__profile" to="/profile">Mi perfil</router-link>
+                    <div class="options__logout" @click="logout">Cerrar sesión</div>
+                </div>
             </div>
-            <router-link class="notLoggedUser" to="/login">
+            <router-link v-else class="notLoggedUser" to="/login">
                 <span>Iniciar sesión</span>
             </router-link>
         </div>
@@ -117,6 +122,7 @@ import RsSvg from '../assets/icons/RsSvg.vue';
 import SonoroSvg from '../assets/icons/SonoroSvg.vue';
 import TodoSvg from '../assets/icons/TodoSvg.vue';
 import ValoresSvg from '../assets/icons/ValoresSvg.vue';
+import defaultProfilePic from '../assets/images/DefaultUser.png';
 import { mapStores } from 'pinia';
 import { useAuthenticationStore } from '../stores/authentication';
 
@@ -136,22 +142,39 @@ export default {
     data() {
         return {
         is_expanded: false,
+        optionsVisible: false,
+        isImageLoading: false,
+        defaultProfilePic
         };
     },
     computed: {
         ...mapStores(useAuthenticationStore),
+        userIsLogged(){
+                return this.authenticationStore.user !== null
+            },
         userInfo(){
             return this.authenticationStore.getUserInfo;
         }
     },
     async mounted() {
-        await this.authenticationStore.getUserData()
+        if(this.userIsLogged){
+            this.isImageLoading = true;
+            await this.authenticationStore.getUserData();
+            this.isImageLoading = false;
+        }
     },
     methods: {
         ToggleMenu() {
             this.is_expanded = !this.is_expanded;
             this.$emit("toggle", this.is_expanded);
         },
+        toggleOptions(){
+            this.optionsVisible = !this.optionsVisible;
+        },
+        async logout(){
+            await this.authenticationStore.logOut();
+            this.$router.push('/');
+        }
     },
     created() {
         this.emitter = inject('emitter');
@@ -165,11 +188,9 @@ aside{
     display: flex;
     flex-direction: column;
     width: calc(6vw + 32px);
-    height: calc(100vh - 2rem);
+    height: 100%;
     box-sizing: border-box;
     padding: 3rem 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
 
     font-family: 'Eina02', sans-serif;
 
@@ -180,12 +201,12 @@ aside{
     border-bottom-right-radius: 1rem;
 
     .logo{
-        margin-bottom: 1rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        height: 10%;
         .lndBrand{
             justify-content: center;
             display: flex;
@@ -249,12 +270,13 @@ aside{
 
     .menu{
         max-width: 100%;
-        
+        height: 80%;
         overflow-y: auto;
         overflow-x: hidden;
-        height: 32rem;
         display: flex;
         flex-direction: column;
+        margin-top: 2vw;
+        margin-bottom: 2vw;
 
         .content{
             margin-bottom: 2rem;
@@ -309,9 +331,10 @@ aside{
     .user{
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
         margin-top: auto;
+        height: 10%;
     }
 
     .loggedUser{
@@ -326,8 +349,27 @@ aside{
         flex-direction: row;
 
         &__icon{
-            width: 3.5rem;
+            width: 2.5vw;
+            height: 2.5vw;
+            border-radius: 50%;
             overflow: hidden;
+
+            .loading-indicator {
+                    position: absolute;
+                    display: flex;
+                    width: 2.5vw;
+                    height: 2.5vw;
+                    border: .3vw solid rgba(0,0,0,.3);
+                    border-radius: 50%;
+                    border-top-color: #000;
+                    animation: spin 1s ease-in-out infinite;
+                }
+
+                @keyframes spin {
+                    to { 
+                        transform: rotate(360deg); 
+                    }
+                }
 
             img{
                 width: 100%;
@@ -378,6 +420,35 @@ aside{
             font-size: 1.5rem;
             color: #757575;
             transition: 0.2s ease-out;
+        }
+    }
+
+    .options{
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        text-decoration: none;
+        width: 10rem;
+        font-size: 0.875rem;
+        right: -10rem;
+        border-radius: 0.625rem;
+        background-color: white;
+        box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
+
+        &__profile{
+            color: black;
+            padding: 1rem 2rem 0rem 2rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        &__logout{
+            color: black;
+            padding: 1rem 2rem 1rem 2rem;
+            text-decoration: none;
+            cursor: pointer;
         }
     }
     &.is-expanded{
