@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { db } from '@/firebase/config'
-import { collection, getDocs, addDoc, serverTimestamp, query, where, updateDoc } from 'firebase/firestore'
+import { collection, getDocs, addDoc, serverTimestamp, query, where, updateDoc, doc, increment } from 'firebase/firestore'
 import { v4 as uuidv4 } from 'uuid';
 
 export const useInteractionStore = defineStore('interaction', {
@@ -48,6 +48,7 @@ export const useInteractionStore = defineStore('interaction', {
                     }
                 });
             }
+            await this.updateCategoryProfile(userid, categoria, liked, shared);
         },
         async getInteraction(userid, contentid) {
             const interactionCollection = collection(db, "user_content_interaction");
@@ -83,6 +84,19 @@ export const useInteractionStore = defineStore('interaction', {
                 // Si la interacción no existe, la creamos
                 await this.registerInteraction(userId, true, contentId, category, like, share ? 1 : 0);
             }
-        },          
+            await this.updateCategoryProfile(userId, category, like, share);
+        },
+
+        async updateCategoryProfile(userId, category, liked, shared) {
+            const categoryProfileRef = doc(db, "users", "users_list", "category_profile", userId);
+        
+            const updatedFields = {
+                [`${category}.views`]: increment(1),
+                [`${category}.likes`]: liked ? increment(1) : increment(0),
+                [`${category}.shares`]: shared ? increment(1) : increment(0),
+            };
+        
+            await updateDoc(categoryProfileRef, updatedFields);
+        }
     }
 })
