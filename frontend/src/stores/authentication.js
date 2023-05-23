@@ -65,7 +65,6 @@ export const useAuthenticationStore = defineStore("authentication", {
         
         async newUserAwait(username, email, password, favCategoria) {
             try {
-                console.log(password)
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password)
                 this.user = userCredential.user;
                 const isAdmin = false;
@@ -96,13 +95,15 @@ export const useAuthenticationStore = defineStore("authentication", {
                 ];
             
                 categories.forEach(category => {
+                    const initialScore = favCategoria.includes(category) ? 100 / favCategoria.length : 0;
                     categoryProfile[category] = {
                     views: 0,
                     shares: 0,
                     likes: 0,
-                    score: favCategoria.includes(category) ? 10 : 0
+                    score: initialScore
                     };
                 });
+                
             
                 const categoryProfileRef = doc(db, "users", "users_list", "category_profile", id);
                 await setDoc(categoryProfileRef, categoryProfile);
