@@ -7,6 +7,52 @@
       @reset-filters="onResetFilters"
     />
 
+    <div class="main__recommendations" v-if="authenticationStore.userInfo">
+      <h3>Lo mejor para ti</h3>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+          :pagination="{ clickable: true }"
+          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+        >
+          <swiper-slide
+            v-for="(content, index) in recommendations"
+            :key="index"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+
+    <div class="main__mightLike" v-if="authenticationStore.userInfo">
+      <h3>Te podría gustar</h3>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+          :pagination="{ clickable: true }"
+          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+        >
+          <swiper-slide
+            v-for="(content, index) in secondaryRecommendations"
+            :key="index"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+
     <div class="main__rs">
       <h3>Radio Samán</h3>
       <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
@@ -65,6 +111,7 @@
 <script>
 import { mapStores } from "pinia";
 import { useContentStore } from "@/stores/contentStore";
+import { useAuthenticationStore } from '../stores/authentication';
 import ContentFilter from "../components/ContentFilter.vue";
 import RsCard from "../components/cards/RsCard.vue";
 import CrCard from "../components/cards/CrCard.vue";
@@ -74,18 +121,28 @@ import { Pagination, Navigation } from "swiper";
 export default {
 
   computed: {
-    ...mapStores(useContentStore),
+    ...mapStores(useContentStore, useAuthenticationStore),
     rsContent(){
       return this.contentStore.getRadioSamanContent;
     },
     cContent(){
       return this.contentStore.getCircularContent;
-    }
+    },
+    topCategories() {
+      console.log('userInfo:', this.authenticationStore.userInfo);
+      if (!this.authenticationStore.userInfo || !this.authenticationStore.userInfo.category_profile) return [];
+      const categoryProfile = this.authenticationStore.userInfo.category_profile;
+      const categories = Object.keys(categoryProfile);
+      categories.sort((a, b) => categoryProfile[b].score - categoryProfile[a].score);
+      return categories.slice(0, 3);
+    },
   },
 
-  mounted() {
+  async mounted() {
     this.contentStore.getRsData()
     this.contentStore.getCrData()
+    this.recommendations = await this.calculateRecommendations();
+    this.secondaryRecommendations = await this.calculateSecondaryRecommendations();
   },
   
 
@@ -96,6 +153,86 @@ export default {
         SwiperSlide,
   },
   methods: {
+    async calculateRecommendations() {
+      console.log("Calculating recommendations...");
+      let recommendationPairs = [];
+      const tCat = this.topCategories;
+      const recommendedContent = await this.contentStore.getContentByCategories(tCat);
+      if (recommendedContent) {
+        for (let content of recommendedContent) {
+          for (let category of this.topCategories) {
+            if (content.categoria.includes(category)) {
+              recommendationPairs.push({category, content});
+            }
+          }
+        }
+      }
+
+      recommendationPairs.sort((a, b) => {
+        const scoreA = Math.max(...a.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
+        const scoreB = Math.max(...b.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
+        
+        return scoreB - scoreA;
+      });
+      const recommendations = recommendationPairs.slice(0, 9).map(pair => pair.content);
+
+      console.log("Recommendations for you: ",recommendations);
+      return recommendations;
+    },
+    async calculateSecondaryRecommendations() {
+      let secondaryRecommendationPairs = [];
+
+      // Find the most similar user
+      const mostSimilarUser = await this.contentStore.findSimilarUser(this.authenticationStore.userInfo);
+
+      if (!mostSimilarUser) {
+        console.log('No similar user found.');
+        return [];
+      }
+
+      console.log('Most similar user:', mostSimilarUser);
+
+      // Get the 2nd and 3rd top categories of the most similar user
+      const categories = Object.keys(mostSimilarUser.category_profile);
+      categories.sort((a, b) => mostSimilarUser.category_profile[b].score - mostSimilarUser.category_profile[a].score);
+      const secondaryCategories = categories.slice(1, 3);
+
+      console.log('Secondary categories:', secondaryCategories);
+
+      // Get content based on the 2nd and 3rd top categories
+      const secondaryRecommendedContent = await this.contentStore.getContentByCategories(secondaryCategories);
+      console.log('secondaryRecommendedContent:', secondaryRecommendedContent);
+
+      // Rest of the recommendation logic
+      if (secondaryRecommendedContent) {
+        for (let content of secondaryRecommendedContent) {
+          for (let category of secondaryCategories) {
+            if (content.categoria.includes(category)) {
+              secondaryRecommendationPairs.push({category, content});
+            }
+          }
+        }
+      }
+
+      secondaryRecommendationPairs.sort((a, b) => {
+        const scoreA = Math.max(...a.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
+        const scoreB = Math.max(...b.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
+
+        return scoreB - scoreA;
+      });
+
+      // Filter out the recommendations that are already in the primary set.
+      const primaryRecommendationIds = this.recommendations.map(r => r.id);
+      secondaryRecommendationPairs = secondaryRecommendationPairs.filter(pair => !primaryRecommendationIds.includes(pair.content.id));
+
+      const secondaryRecommendations = secondaryRecommendationPairs.slice(0, 9).map(pair => pair.content);
+
+      console.log("Secondary recommendations: ", secondaryRecommendations);
+      return secondaryRecommendations;
+    },
+    getCardComponent(content) {
+      return content.medio === 'rs' ? 'RsCard' : 'CrCard';
+    },
     onCategoryChange(category) {
       this.selectedCategory = category;
       this.contentStore.updateContentList(this.selectedCategory, this.selectedOrder);
@@ -128,6 +265,9 @@ export default {
       selectedCategory: null,
       selectedOrder: null,
       isShowingNewContent: true,
+      recommendations: [],
+      secondaryRecommendations: [],
+      
     };
   }
 }

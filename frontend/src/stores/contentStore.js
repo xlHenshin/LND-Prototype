@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { db, storage } from '@/firebase/config'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { ref, getDownloadURL } from "firebase/storage";
 
 export const useContentStore = defineStore('content', {
@@ -83,6 +83,31 @@ export const useContentStore = defineStore('content', {
             return filteredEpisodes.length > 0 ? { ...filteredEpisodes[0] } : null;
         },
 
+        async getContentByCategories(categories) {
+            const collections = ["/contenidos/rs/contenidos_rs", "/contenidos/c/contenidos_c"];
+            let allDocs = [];
+        
+            for (const collectionPath of collections) {
+                const contentCollection = collection(db, collectionPath);
+                const querySnapshot = await getDocs(contentCollection);
+        
+                if (!querySnapshot.empty) {
+                    const docs = querySnapshot.docs.map(doc => doc.data());
+                    allDocs = allDocs.concat(docs);
+                }
+            }
+        
+            if (allDocs.length === 0) {
+                console.log('No documents found.');
+                return [];
+            }
+            const filtered = allDocs.filter(doc => categories.some(category => doc.categoria.includes(category)));
+            const topTrending = getTopTrendingContents(filtered);
+            console.log("Top trending contents:", topTrending);
+        
+            return topTrending;
+        },
+
         async getCrData(){
             const collectionRef = collection(db, "/contenidos/c/contenidos_c");
             const contentSnapshot = await getDocs(collectionRef);
@@ -102,6 +127,61 @@ export const useContentStore = defineStore('content', {
             this.perContent = filterWrittenContentBySubcategory(filterContentByMediaType(this.circularContent, 'escrito'), 'per');
             this.allPerContent = [...this.perContent];
             this.topTrendingCrContent = getTopTrendingContents(this.allCrContent);
+        },
+
+        async findSimilarUser(currentUser){
+            const userCollection = collection(db, "/users");
+            const userSnapshot = await getDocs(userCollection);
+        
+            let mostSimilarUser = null;
+            let lowestSimilarityScore = Infinity;
+            let highestCategory = null;
+        
+            for (let doc of userSnapshot.docs) {
+                let user = doc.data();
+                console.log("Comparing with user:", user);
+        
+                if (user.id === currentUser.id) continue;
+        
+                let { similarityScore, maxCategory } = calculateUserSimilarity(currentUser, user);
+        
+                if (similarityScore < lowestSimilarityScore) {
+                    lowestSimilarityScore = similarityScore;
+                    mostSimilarUser = user;
+                    highestCategory = maxCategory;
+                }
+                
+            }
+            console.log('Most similar user: ', mostSimilarUser );
+            console.log('Highest category: ', highestCategory );
+            return mostSimilarUser;
+        },
+
+        async getContentByUser(currentUser){
+            console.log("Current user:", currentUser)
+            let similarUser = await findSimilarUser(currentUser);
+
+            const interactionCollection = collection(db, "/user_content_interaction");
+            const interactionSnapshot = await getDocs(query(interactionCollection, where("userid", "==", similarUser.id)));
+
+            let contentIds = interactionSnapshot.docs.map(doc => doc.data().contentid);
+
+            // Filtrar los contenidos que el usuario actual ya ha consumido
+            const currentUserInteractionSnapshot = await getDocs(query(interactionCollection, where("userid", "==", currentUser.id)));
+            let currentUserContentIds = currentUserInteractionSnapshot.docs.map(doc => doc.data().contentid);
+
+            contentIds = contentIds.filter(id => !currentUserContentIds.includes(id));
+
+            // Buscar los contenidos por id
+            let contents = [];
+            for (let id of contentIds) {
+                let content = await this.getContentById(id);
+                if (content) {
+                    contents.push(content);
+                }
+            }
+
+            return contents;
         },
 
         async fetchMediaUrl(path) {
@@ -211,6 +291,29 @@ function calculateTrendScore(content) {
 
     return viewScore + likeScore + shareScore;
 }
+
+function calculateUserSimilarity(user1, user2) {
+    let similarityScore = 0;
+    let maxCategory = null;
+    let maxCategoryScore = -Infinity;
+
+    for (let category in user1.category_profile) {
+        if (user2.category_profile[category]) {
+            let absDifference = Math.abs(user1.category_profile[category].score - user2.category_profile[category].score);
+            similarityScore += absDifference;
+            
+            // Comprobamos si la puntuación de la categoría es la máxima hasta ahora
+            if (user1.category_profile[category].score > maxCategoryScore) {
+                maxCategoryScore = user1.category_profile[category].score;
+                maxCategory = category;
+            }
+        }
+    }
+
+    // Devolvemos tanto la puntuación de similitud como la categoría con la puntuación más alta
+    return { similarityScore, maxCategory };
+}
+
 
 function getTopTrendingContents(contents) {
     const sortedContents = [...contents].sort((a, b) => {

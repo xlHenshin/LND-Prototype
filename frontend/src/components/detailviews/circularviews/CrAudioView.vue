@@ -16,8 +16,8 @@
                         <h5>{{ content.views }} Vistas</h5>
                     </div>
                     <div class="contentData__right interactions">
-                        <button>{{ content.likes }} Like</button>
-                        <button>Compartir</button> 
+                        <button @click="$emit('like')">{{ content.likes }} Like</button>
+                        <button @click="$emit('share')">Compartir</button> 
                     </div>
                     <div class="contentData__right program">
                         <h5>{{ subcategoriaFormateada }}</h5>
