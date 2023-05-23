@@ -33,17 +33,19 @@ export default {
         CrTextView,
         CrVideoView,
     },
-    mounted() {
+    async mounted() {
         const contentId = this.$route.params.id;
-        this.currentContent = this.contentStore.getContentById(contentId);
+        this.currentContent = await this.contentStore.getContentById(contentId);
         if (this.currentContent && this.currentContent.medio === 'c') {
             if (this.currentContent.tipo === 'escrito' || this.currentContent.tipo === 'sonoro' || this.currentContent.tipo === 'audiovisual') {
-                this.currentContent.mediaUrl = this.contentStore.fetchMediaUrl(this.currentContent.metadatos.url);
+                this.currentContent.mediaUrl = await this.contentStore.fetchMediaUrl(this.currentContent.metadatos.url);
             }
         }
         const user = this.authenticationStore.userInfo;
-        if (user) {
-            this.interactionStore.registerInteraction(user.id, true, this.currentContent.id, this.currentContent.categoria, false, false);
+        if (user && this.currentContent) {
+            await this.interactionStore.registerInteraction(user.id, true, this.currentContent.id, this.currentContent.categoria, false, false);
+            this.interactionStore.updateCategoryProfile(user.id, this.currentContent.categoria, 'view');
+            this.interactionStore.updateContentInteraction(this.currentContent.id, this.currentContent.medio, 'view');
         }
 
         window.addEventListener('beforeunload', this.recordInteraction);
@@ -52,21 +54,32 @@ export default {
         handleLike() {
             const user = this.authenticationStore.userInfo;
             if (user) {
-                this.interactionStore.updateInteraction(user.id, this.currentContent.id, this.currentContent.categoria, true, false);
+                this.interactionStore.updateInteraction(user.id, this.currentContent.id, this.currentContent.categoria, 'like');
+                this.interactionStore.updateContentInteraction(this.currentContent.id, this.currentContent.medio, 'like');
             }
         },
         handleShare() {
             const user = this.authenticationStore.userInfo;
             if (user) {
-                this.interactionStore.updateInteraction(user.id, this.currentContent.id, this.currentContent.categoria, false, true);
+                this.interactionStore.updateInteraction(user.id, this.currentContent.id, this.currentContent.categoria, 'share');
+                this.interactionStore.updateContentInteraction(this.currentContent.id, this.currentContent.medio, 'share');
             }
         },
-        recordInteraction() {
+        async recordInteraction() {
             const user = this.authenticationStore.userInfo;
             if (user && user.id && this.currentContent && this.currentContent.id && this.currentContent.categoria) {
-                this.interactionStore.registerInteraction(user.id, true, this.currentContent.id, this.currentContent.categoria, false, false);
+                // Check if the user has not liked or shared this content yet
+                const interaction = await this.interactionStore.getInteraction(user.id, this.currentContent.id);
+                if (!interaction || (!interaction.data().liked && !interaction.data().shared)) {
+                    this.interactionStore.registerInteraction(user.id, true, this.currentContent.id, this.currentContent.categoria, 'view');
+                    this.interactionStore.updateCategoryProfile(user.id, this.currentContent.categoria, 'view');
+                    this.interactionStore.updateContentInteraction(this.currentContent.id, this.currentContent.medio, 'view');
+                }
             }
-        }
+        },
+    },
+    beforeDestroy() {
+        window.removeEventListener('beforeunload', this.recordInteraction);
     },
 };
 </script>

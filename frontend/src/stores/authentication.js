@@ -37,9 +37,9 @@ export const useAuthenticationStore = defineStore("authentication", {
         async eliminateUser(){
             const user = auth.currentUser;
             console.log("usuario a borrar: "+user);
-    
+        
             await deleteDoc(doc(db,"users",auth.currentUser.uid))
-    
+        
             deleteUser(user).then(()=>{
                 alert("¡Usuario eliminado!")
             }).catch((error)=>{
@@ -48,42 +48,28 @@ export const useAuthenticationStore = defineStore("authentication", {
         },
         async getUserData(){
             if(auth.currentUser !== null){
-                const collectionRef = collection(db, "/users/users_list/registered_list");
-                const contentSnapshot = await getDocs(collectionRef);
-        
-                const userData = contentSnapshot.docs.map(doc => doc.data());
-                console.log('userlist: ', userData)
-                let currentUser
-                for (let index = 0; index < userData.length; index++) {
-                    if(auth.currentUser.email === userData[index].email){
-                    currentUser = userData[index]
-                    }
+                const userDocRef = doc(db, "users", auth.currentUser.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    console.log('userData: ', userData);
+                    this.userInfo = userData;
+                } else {
+                    console.log(`No user found with id: ${auth.currentUser.uid}`);
                 }
-                this.userInfo = currentUser
             }
-        },
-        
+        },        
         async newUserAwait(username, email, password, favCategoria) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password)
                 this.user = userCredential.user;
                 const isAdmin = false;
                 const id = userCredential.user.uid;
-                const userData = {
-                    id: id,
-                    username: username,
-                    email: email,
-                    password: password,
-                    admin: isAdmin,
-                    favCategoria: favCategoria
-                }
-                const ref = doc(db, "users", "users_list", "registered_list", id);
-                await setDoc(ref, userData);
-            
+        
                 // Crear perfil de categoría para el usuario
-                const categoryProfile = {
-                    id: id
-                };
+                const categoryProfile = {};
+        
                 const categories = [
                     'Social y Político',
                     'Entretenimiento',
@@ -93,7 +79,7 @@ export const useAuthenticationStore = defineStore("authentication", {
                     'Comunicación',
                     'Arte, cultura y literatura'
                 ];
-            
+        
                 categories.forEach(category => {
                     const initialScore = favCategoria.includes(category) ? 100 / favCategoria.length : 0;
                     categoryProfile[category] = {
@@ -103,22 +89,32 @@ export const useAuthenticationStore = defineStore("authentication", {
                     score: initialScore
                     };
                 });
-                
-            
-                const categoryProfileRef = doc(db, "users", "users_list", "category_profile", id);
-                await setDoc(categoryProfileRef, categoryProfile);
-            
+        
+                // Combinar userData y categoryProfile
+                const userData = {
+                    id: id,
+                    username: username,
+                    email: email,
+                    password: password,
+                    admin: isAdmin,
+                    favCategoria: favCategoria,
+                    category_profile: categoryProfile // ahora category_profile es parte del mismo documento del usuario
+                }
+        
+                const ref = doc(db, "users", id); // cambiar la ruta para apuntar directamente al documento del usuario
+                await setDoc(ref, userData);
+        
                 console.log('Usuario creado: ', userCredential.user)
             } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorMessage);
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(errorMessage);
             }
-        },
+        },        
             
         async updateUsername(newUsername) {
             const userId = auth.currentUser.uid;
-            const userRef = doc(db, "users", "users_list", "registered_list", userId);
+            const userRef = doc(db, "users", userId);
             await updateDoc(userRef, { username: newUsername });
             this.userInfo.username = newUsername;
         },
@@ -146,7 +142,7 @@ export const useAuthenticationStore = defineStore("authentication", {
                     const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
                     console.log('File available at', downloadURL);
         
-                    const userRef = doc(db, "users", "users_list", "registered_list", userId);
+                    const userRef = doc(db, "users", userId);
                     const userSnapshot = await getDoc(userRef);
         
                     if (userSnapshot.exists()) {
@@ -164,7 +160,7 @@ export const useAuthenticationStore = defineStore("authentication", {
         async deleteUserImage() {
             this.isImageLoading = true;
             const userId = auth.currentUser.uid;
-            const userDocRef = doc(db, "users", "users_list", "registered_list", userId);
+            const userDocRef = doc(db, "users", userId);
             const userDocData = await getDoc(userDocRef);
             
             if (userDocData.exists()) {
