@@ -1,113 +1,109 @@
 <template>
 
   <main class="main">
-    <Sidebar v-if="userInfoLoaded" :user="userInfo" :userInfoLoaded="userInfoLoaded" class="sidebar" v-bind:class="{'sidebar-expanded': isSidebarExpanded}" @toggle="handleSidebarToggle"/>
-    <div :class="{'main-content': true, 'sidebar-expanded': isSidebarExpanded}">
-      <ContentFilter
-        @category-change="onCategoryChange"
-        @order-change="onOrderChange"
-        @reset-filters="onResetFilters"
-      />
+    <ContentFilter
+      @category-change="onCategoryChange"
+      @order-change="onOrderChange"
+      @reset-filters="onResetFilters"
+    />
 
-      <div class="recommendation" v-if="authenticationStore.userInfo">
-        <h3>Lo mejor para ti</h3>
-        <div class="cards">
-          <swiper
-            class="swiper"
-            :space-between="30"
-            :slides-per-view="3"
-            :free-mode="true"
-            :pagination="{ clickable: true }"
-            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+    <div class="recommendation" v-if="authenticationStore.userInfo">
+      <h3>Lo mejor para ti</h3>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+          :pagination="{ clickable: true }"
+          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+        >
+          <swiper-slide
+            v-for="(content, index) in recommendations"
+            :key="index"
           >
-            <swiper-slide
-              v-for="(content, index) in recommendations"
-              :key="index"
-            >
-              <router-link :to="`/content/${content.id}`">
-                <component :is="getCardComponent(content)" :content="content" />
-              </router-link>
-            </swiper-slide>
-          </swiper>
-        </div>
-      </div>
-
-      <div class="recommendation" v-if="authenticationStore.userInfo">
-        <h3>Te podría gustar</h3>
-        <div class="cards">
-          <swiper
-            class="swiper"
-            :space-between="30"
-            :slides-per-view="3"
-            :free-mode="true"
-            :pagination="{ clickable: true }"
-            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
-          >
-            <swiper-slide
-              v-for="(content, index) in secondaryRecommendations"
-              :key="index"
-            >
-              <router-link :to="`/content/${content.id}`">
-                <component :is="getCardComponent(content)" :content="content" />
-              </router-link>
-            </swiper-slide>
-          </swiper>
-        </div>
-      </div>
-
-      <div class="recommendation">
-        <h3>Radio Samán</h3>
-        <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
-        <div class="cards">
-          <swiper
-            class="swiper"
-            :space-between="30"
-            :slides-per-view="3"
-            :free-mode="true"
-            :pagination="{ clickable: true }"
-            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
-          >
-            <swiper-slide
-              v-for="content in rsContent"
-              :key="content.id"
-            >
-              <router-link class="routerlink" :to="`/content/${content.id}`">
-                <RsCard :content="content" />
-              </router-link>
-            </swiper-slide>
-          </swiper>
-
-        </div>
-
-      </div>
-
-      <div class="recommendation">
-        <h3>Circular</h3>
-        <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
-        <div class="cards">
-          <swiper
-            class="swiper"
-            :space-between="30"
-            :slides-per-view="3"
-            :free-mode="true"
-            :pagination="{ clickable: true }"
-            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
-          >
-            <swiper-slide
-              v-for="content in cContent"
-              :key="content.id"
-            >
-              <router-link :to="`/content/${content.id}`">
-                <CrCard :content="content" />
-              </router-link>
-            </swiper-slide>
-          </swiper>
-
-        </div>
-
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
       </div>
     </div>
-    
+
+    <div class="recommendation" v-if="authenticationStore.userInfo">
+      <h3>Te podría gustar</h3>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+          :pagination="{ clickable: true }"
+          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+        >
+          <swiper-slide
+            v-for="(content, index) in secondaryRecommendations"
+            :key="index"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+
+    <div class="recommendation">
+      <h3>Radio Samán</h3>
+      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+          :pagination="{ clickable: true }"
+          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+        >
+          <swiper-slide
+            v-for="content in rsContent"
+            :key="content.id"
+          >
+            <router-link class="routerlink" :to="`/content/${content.id}`">
+              <RsCard :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+
+      </div>
+
+    </div>
+
+    <div class="recommendation">
+      <h3>Circular</h3>
+      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+          :pagination="{ clickable: true }"
+          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+        >
+          <swiper-slide
+            v-for="content in cContent"
+            :key="content.id"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <CrCard :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+
+      </div>
+
+    </div>
   </main>
 </template>
 
@@ -120,7 +116,6 @@ import RsCard from "../components/cards/RsCard.vue";
 import CrCard from "../components/cards/CrCard.vue";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { Pagination, Navigation } from "swiper";
-import Sidebar from "../components/Sidebar.vue";
 
 export default {
 
@@ -164,30 +159,23 @@ export default {
   },
 
   components:{
-        Sidebar, ContentFilter,
-        RsCard, CrCard,
-        Swiper,
-        SwiperSlide,
+    ContentFilter,
+    RsCard, CrCard,
+    Swiper,
+    SwiperSlide,
   },
   methods: {
-    handleSidebarToggle(expanded) {
-      this.isSidebarExpanded = expanded;
-    },
     async loadUserData() {
       return new Promise((resolve, reject) => {
           if(this.userIsLogged){
-              this.isImageLoading = true;
               this.authenticationStore.getUserData()
                   .then(() => {
-                      this.userInfoLoaded = true;
-                      this.isImageLoading = false;
                       console.log('User info after getUserData: ', this.userInfo);
                       console.log('User info from store after getUserData: ', this.authenticationStore.getUserInfo);
                       resolve();
                   })
                   .catch((error) => {
                       console.error('Error cargando datos del usuario:', error);
-                      this.isImageLoading = false;
                       reject(error);
                   });
           } else {
@@ -215,8 +203,8 @@ export default {
       
       return scoreB - scoreA;
     });
-    const recommendations = recommendationPairs.slice(0, 9).map(pair => pair.content);
-    return recommendations;
+      const recommendations = recommendationPairs.slice(0, 9).map(pair => pair.content);
+      return recommendations;
   },
     async calculateSecondaryRecommendations() {
       let secondaryRecommendationPairs = [];
@@ -300,8 +288,6 @@ export default {
       isShowingNewContent: true,
       recommendations: [],
       secondaryRecommendations: [],
-      isSidebarExpanded: false,
-      userInfoLoaded: false,
     };
   }
 }
@@ -311,24 +297,9 @@ export default {
   .main{
     width: 100%;
 
-    .sidebar {
-      position: fixed;
-      z-index: 1000;
-    }
-
-    .main-content{
-      padding-left: calc(6vw + 32px);
-      transition: 0.2s ease-out;
-      background-color: #F5F5F5;
-
-      .recommendation{
+    .recommendation{
         padding: 0 10vw 4vw 10vw;
       }
-
-      &.sidebar-expanded{
-        padding-left: calc(16vw + 32px);
-      }
-    }
   }
   .routerlink{
     text-decoration: none;
