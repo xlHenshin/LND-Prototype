@@ -159,6 +159,11 @@ export const useContentStore = defineStore('content', {
 
         async getContentByUser(currentUser){
             console.log("Current user:", currentUser)
+            if (!this.currentUser) {
+                console.log('User information is not loaded yet!');
+                return;
+            }
+            console.log("Current user:", currentUser)
             let similarUser = await findSimilarUser(currentUser);
 
             const interactionCollection = collection(db, "/user_content_interaction");

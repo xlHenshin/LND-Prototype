@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { db } from "../firebase/config";
 import { collection, doc, setDoc, getDocs, deleteDoc, updateDoc, getDoc } from "firebase/firestore";
@@ -14,6 +14,19 @@ export const useAuthenticationStore = defineStore("authentication", {
         getUserInfo: (state) =>[state.userInfo]
     },
     actions: {
+        authState() {
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        this.user = user;
+                        resolve(user);
+                    } else {
+                        this.user = null;
+                        resolve(null);
+                    }
+                });
+            });
+        },
         signIn(email, password) {
             return signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
@@ -47,19 +60,25 @@ export const useAuthenticationStore = defineStore("authentication", {
             })
         },
         async getUserData(){
-            if(auth.currentUser !== null){
-                const userDocRef = doc(db, "users", auth.currentUser.uid);
-                const userDoc = await getDoc(userDocRef);
-                
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    console.log('userData: ', userData);
-                    this.userInfo = userData;
+            return new Promise(async (resolve, reject) => {
+                if(auth.currentUser !== null){
+                    const userDocRef = doc(db, "users", auth.currentUser.uid);
+                    const userDoc = await getDoc(userDocRef);
+        
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        this.userInfo = JSON.parse(JSON.stringify(userData));
+                        console.log('User data: ', this.userInfo);
+                        resolve();
+                    } else {
+                        console.log(`No user found with id: ${auth.currentUser.uid}`);
+                        reject(`No user found with id: ${auth.currentUser.uid}`);
+                    }
                 } else {
-                    console.log(`No user found with id: ${auth.currentUser.uid}`);
+                    reject('No current user');
                 }
-            }
-        },        
+            });
+        },
         async newUserAwait(username, email, password, favCategoria) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password)

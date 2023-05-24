@@ -62,9 +62,7 @@ export default {
     },
 
     async mounted() {
-        this.isImageLoading = true;
-        await this.authenticationStore.getUserData();
-        this.isImageLoading = false;
+        await this.loadUserData();
     },
     watch: {
         userInfo: {
@@ -122,7 +120,20 @@ export default {
                         this.isImageLoading = false;
                     });
             }
-        }
+        },
+
+        async loadUserData() {
+            if(this.userIsLogged){
+                this.isImageLoading = true;
+                try {
+                    await this.authenticationStore.getUserData();
+                } catch (error) {
+                    console.error('Error cargando datos del usuario:', error);
+                } finally {
+                    this.isImageLoading = false;
+                }
+            }
+        },
     }
 }
 </script>

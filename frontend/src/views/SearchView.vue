@@ -1,108 +1,111 @@
 <template>
 
   <main class="main">
-    <ContentFilter
-      @category-change="onCategoryChange"
-      @order-change="onOrderChange"
-      @reset-filters="onResetFilters"
-    />
+    <Sidebar v-if="userInfoLoaded" :user="userInfo" :userInfoLoaded="userInfoLoaded" class="sidebar" v-bind:class="{'sidebar-expanded': isSidebarExpanded}" @toggle="handleSidebarToggle"/>
+    <div :class="{'main-content': true, 'sidebar-expanded': isSidebarExpanded}">
+      <ContentFilter
+        @category-change="onCategoryChange"
+        @order-change="onOrderChange"
+        @reset-filters="onResetFilters"
+      />
 
-    <div class="main__recommendations" v-if="authenticationStore.userInfo">
-      <h3>Lo mejor para ti</h3>
-      <div class="cards">
-        <swiper
-          class="swiper"
-          :space-between="30"
-          :slides-per-view="3"
-          :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
-        >
-          <swiper-slide
-            v-for="(content, index) in recommendations"
-            :key="index"
+      <div class="recommendation" v-if="authenticationStore.userInfo">
+        <h3>Lo mejor para ti</h3>
+        <div class="cards">
+          <swiper
+            class="swiper"
+            :space-between="30"
+            :slides-per-view="3"
+            :free-mode="true"
+            :pagination="{ clickable: true }"
+            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
           >
-            <router-link :to="`/content/${content.id}`">
-              <component :is="getCardComponent(content)" :content="content" />
-            </router-link>
-          </swiper-slide>
-        </swiper>
-      </div>
-    </div>
-
-    <div class="main__mightLike" v-if="authenticationStore.userInfo">
-      <h3>Te podría gustar</h3>
-      <div class="cards">
-        <swiper
-          class="swiper"
-          :space-between="30"
-          :slides-per-view="3"
-          :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
-        >
-          <swiper-slide
-            v-for="(content, index) in secondaryRecommendations"
-            :key="index"
-          >
-            <router-link :to="`/content/${content.id}`">
-              <component :is="getCardComponent(content)" :content="content" />
-            </router-link>
-          </swiper-slide>
-        </swiper>
-      </div>
-    </div>
-
-    <div class="main__rs">
-      <h3>Radio Samán</h3>
-      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
-      <div class="cards">
-        <swiper
-          class="swiper"
-          :space-between="30"
-          :slides-per-view="3"
-          :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
-        >
-          <swiper-slide
-            v-for="content in rsContent"
-            :key="content.id"
-          >
-            <router-link class="routerlink" :to="`/content/${content.id}`">
-              <RsCard :content="content" />
-            </router-link>
-          </swiper-slide>
-        </swiper>
-
+            <swiper-slide
+              v-for="(content, index) in recommendations"
+              :key="index"
+            >
+              <router-link :to="`/content/${content.id}`">
+                <component :is="getCardComponent(content)" :content="content" />
+              </router-link>
+            </swiper-slide>
+          </swiper>
+        </div>
       </div>
 
-    </div>
-
-    <div class="main__c">
-      <h3>Circular</h3>
-      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
-      <div class="main__cards">
-        <swiper
-          class="swiper"
-          :space-between="30"
-          :slides-per-view="3"
-          :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
-        >
-          <swiper-slide
-            v-for="content in cContent"
-            :key="content.id"
+      <div class="recommendation" v-if="authenticationStore.userInfo">
+        <h3>Te podría gustar</h3>
+        <div class="cards">
+          <swiper
+            class="swiper"
+            :space-between="30"
+            :slides-per-view="3"
+            :free-mode="true"
+            :pagination="{ clickable: true }"
+            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
           >
-            <router-link :to="`/content/${content.id}`">
-              <CrCard :content="content" />
-            </router-link>
-          </swiper-slide>
-        </swiper>
+            <swiper-slide
+              v-for="(content, index) in secondaryRecommendations"
+              :key="index"
+            >
+              <router-link :to="`/content/${content.id}`">
+                <component :is="getCardComponent(content)" :content="content" />
+              </router-link>
+            </swiper-slide>
+          </swiper>
+        </div>
+      </div>
+
+      <div class="recommendation">
+        <h3>Radio Samán</h3>
+        <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+        <div class="cards">
+          <swiper
+            class="swiper"
+            :space-between="30"
+            :slides-per-view="3"
+            :free-mode="true"
+            :pagination="{ clickable: true }"
+            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+          >
+            <swiper-slide
+              v-for="content in rsContent"
+              :key="content.id"
+            >
+              <router-link class="routerlink" :to="`/content/${content.id}`">
+                <RsCard :content="content" />
+              </router-link>
+            </swiper-slide>
+          </swiper>
+
+        </div>
 
       </div>
 
+      <div class="recommendation">
+        <h3>Circular</h3>
+        <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+        <div class="cards">
+          <swiper
+            class="swiper"
+            :space-between="30"
+            :slides-per-view="3"
+            :free-mode="true"
+            :pagination="{ clickable: true }"
+            :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
+          >
+            <swiper-slide
+              v-for="content in cContent"
+              :key="content.id"
+            >
+              <router-link :to="`/content/${content.id}`">
+                <CrCard :content="content" />
+              </router-link>
+            </swiper-slide>
+          </swiper>
+
+        </div>
+
+      </div>
     </div>
     
   </main>
@@ -117,6 +120,7 @@ import RsCard from "../components/cards/RsCard.vue";
 import CrCard from "../components/cards/CrCard.vue";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { Pagination, Navigation } from "swiper";
+import Sidebar from "../components/Sidebar.vue";
 
 export default {
 
@@ -129,56 +133,91 @@ export default {
       return this.contentStore.getCircularContent;
     },
     topCategories() {
-      console.log('userInfo:', this.authenticationStore.userInfo);
       if (!this.authenticationStore.userInfo || !this.authenticationStore.userInfo.category_profile) return [];
       const categoryProfile = this.authenticationStore.userInfo.category_profile;
       const categories = Object.keys(categoryProfile);
       categories.sort((a, b) => categoryProfile[b].score - categoryProfile[a].score);
       return categories.slice(0, 3);
     },
+    userIsLogged(){
+      console.log(this.authenticationStore.user)
+      return this.authenticationStore.user !== null
+    },
+    userInfo(){
+      return this.authenticationStore.getUserInfo;
+    },
   },
 
-  async mounted() {
-    this.contentStore.getRsData()
-    this.contentStore.getCrData()
+  async created() {
+    await this.authenticationStore.authState();
+    if(this.userIsLogged){
+        try {
+            await this.loadUserData();
+        } catch (error) {
+            console.error('Failed to load user data:', error);
+        }
+    }
+    this.contentStore.getRsData();
+    this.contentStore.getCrData();
     this.recommendations = await this.calculateRecommendations();
     this.secondaryRecommendations = await this.calculateSecondaryRecommendations();
   },
-  
 
   components:{
-        ContentFilter,
+        Sidebar, ContentFilter,
         RsCard, CrCard,
         Swiper,
         SwiperSlide,
   },
   methods: {
-    async calculateRecommendations() {
-      console.log("Calculating recommendations...");
-      let recommendationPairs = [];
-      const tCat = this.topCategories;
-      const recommendedContent = await this.contentStore.getContentByCategories(tCat);
-      if (recommendedContent) {
-        for (let content of recommendedContent) {
-          for (let category of this.topCategories) {
-            if (content.categoria.includes(category)) {
-              recommendationPairs.push({category, content});
-            }
+    handleSidebarToggle(expanded) {
+      this.isSidebarExpanded = expanded;
+    },
+    async loadUserData() {
+      return new Promise((resolve, reject) => {
+          if(this.userIsLogged){
+              this.isImageLoading = true;
+              this.authenticationStore.getUserData()
+                  .then(() => {
+                      this.userInfoLoaded = true;
+                      this.isImageLoading = false;
+                      console.log('User info after getUserData: ', this.userInfo);
+                      console.log('User info from store after getUserData: ', this.authenticationStore.getUserInfo);
+                      resolve();
+                  })
+                  .catch((error) => {
+                      console.error('Error cargando datos del usuario:', error);
+                      this.isImageLoading = false;
+                      reject(error);
+                  });
+          } else {
+              reject('User is not logged in');
+          }
+      });
+  },
+  async calculateRecommendations() {
+    let recommendationPairs = [];
+    const tCat = this.topCategories;
+    const recommendedContent = await this.contentStore.getContentByCategories(tCat);
+    if (recommendedContent) {
+      for (let content of recommendedContent) {
+        for (let category of this.topCategories) {
+          if (content.categoria.includes(category)) {
+            recommendationPairs.push({category, content});
           }
         }
       }
+    }
 
-      recommendationPairs.sort((a, b) => {
-        const scoreA = Math.max(...a.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
-        const scoreB = Math.max(...b.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
-        
-        return scoreB - scoreA;
-      });
-      const recommendations = recommendationPairs.slice(0, 9).map(pair => pair.content);
-
-      console.log("Recommendations for you: ",recommendations);
-      return recommendations;
-    },
+    recommendationPairs.sort((a, b) => {
+      const scoreA = Math.max(...a.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
+      const scoreB = Math.max(...b.content.categoria.map(category => this.authenticationStore.userInfo.category_profile[category]?.score || 0));
+      
+      return scoreB - scoreA;
+    });
+    const recommendations = recommendationPairs.slice(0, 9).map(pair => pair.content);
+    return recommendations;
+  },
     async calculateSecondaryRecommendations() {
       let secondaryRecommendationPairs = [];
 
@@ -190,18 +229,14 @@ export default {
         return [];
       }
 
-      console.log('Most similar user:', mostSimilarUser);
 
       // Get the 2nd and 3rd top categories of the most similar user
       const categories = Object.keys(mostSimilarUser.category_profile);
       categories.sort((a, b) => mostSimilarUser.category_profile[b].score - mostSimilarUser.category_profile[a].score);
       const secondaryCategories = categories.slice(1, 3);
 
-      console.log('Secondary categories:', secondaryCategories);
-
       // Get content based on the 2nd and 3rd top categories
       const secondaryRecommendedContent = await this.contentStore.getContentByCategories(secondaryCategories);
-      console.log('secondaryRecommendedContent:', secondaryRecommendedContent);
 
       // Rest of the recommendation logic
       if (secondaryRecommendedContent) {
@@ -226,8 +261,6 @@ export default {
       secondaryRecommendationPairs = secondaryRecommendationPairs.filter(pair => !primaryRecommendationIds.includes(pair.content.id));
 
       const secondaryRecommendations = secondaryRecommendationPairs.slice(0, 9).map(pair => pair.content);
-
-      console.log("Secondary recommendations: ", secondaryRecommendations);
       return secondaryRecommendations;
     },
     getCardComponent(content) {
@@ -267,27 +300,34 @@ export default {
       isShowingNewContent: true,
       recommendations: [],
       secondaryRecommendations: [],
-      
+      isSidebarExpanded: false,
+      userInfoLoaded: false,
     };
   }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   .main{
     width: 100%;
 
-    &__rs{
-      padding: 0 10vw 4vw 10vw;
+    .sidebar {
+      position: fixed;
+      z-index: 1000;
     }
 
-    &__c{
-      padding: 0 10vw 4vw 10vw;
-    }
+    .main-content{
+      padding-left: calc(6vw + 32px);
+      transition: 0.2s ease-out;
+      background-color: #F5F5F5;
 
-    &__cards{
-      margin: 0;
-      width: 100%;
+      .recommendation{
+        padding: 0 10vw 4vw 10vw;
+      }
+
+      &.sidebar-expanded{
+        padding-left: calc(16vw + 32px);
+      }
     }
   }
   .routerlink{

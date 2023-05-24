@@ -82,16 +82,16 @@
     </div>
 
         <div class="user">
-            <div class="loggedUser" v-if="userIsLogged">
+            <div class="loggedUser" v-if="user">
                 <div class="userInfo">
                     <div class="userInfo__icon">
                         <div v-if="isImageLoading" class="loading-indicator"></div>
-                        <img v-else :src="userInfo.length > 0 && userInfo[0].url ? userInfo[0].url : defaultProfilePic" alt="Imagen de perfil" />
+                        <img v-else :src="user && user.url ? user.url : defaultProfilePic" alt="Imagen de perfil" />
                     </div>
 
-                    <div class="userInfo__data">
-                        <span class="username">{{userInfo[0].username}}</span>
-                        <span class="email">{{userInfo[0].email}}</span>
+                    <div class="userInfo__data" >
+                        <span class="username">{{user[0].username}}</span>
+                        <span class="email">{{user[0].email}}</span>
                     </div>
                 </div>
                 
@@ -123,8 +123,6 @@ import SonoroSvg from '../assets/icons/SonoroSvg.vue';
 import TodoSvg from '../assets/icons/TodoSvg.vue';
 import ValoresSvg from '../assets/icons/ValoresSvg.vue';
 import defaultProfilePic from '../assets/images/DefaultUser.png';
-import { mapStores } from 'pinia';
-import { useAuthenticationStore } from '../stores/authentication';
 
 export default {
     components: {
@@ -139,6 +137,16 @@ export default {
         TodoSvg,
         ValoresSvg,
     },
+    props: {
+        user: {
+            type: Object,
+            default: () => ({}),
+        },
+        userInfoLoaded: {
+            type: Boolean,
+            default: false,
+        }
+    },
     data() {
         return {
         is_expanded: false,
@@ -147,22 +155,7 @@ export default {
         defaultProfilePic
         };
     },
-    computed: {
-        ...mapStores(useAuthenticationStore),
-        userIsLogged(){
-                return this.authenticationStore.user !== null
-            },
-        userInfo(){
-            return this.authenticationStore.getUserInfo;
-        }
-    },
-    async mounted() {
-        if(this.userIsLogged){
-            this.isImageLoading = true;
-            await this.authenticationStore.getUserData();
-            this.isImageLoading = false;
-        }
-    },
+
     methods: {
         ToggleMenu() {
             this.is_expanded = !this.is_expanded;
@@ -172,13 +165,22 @@ export default {
             this.optionsVisible = !this.optionsVisible;
         },
         async logout(){
-            await this.authenticationStore.logOut();
-            this.$router.push('/');
+            
         }
     },
     created() {
         this.emitter = inject('emitter');
     },
+    watch: {
+        user: {
+            handler(newVal, oldVal) {
+            console.log('user prop updated. New value: ', newVal);
+            console.log('Username: ', newVal.username);
+            console.log('Email: ', newVal.email);
+            },
+            deep: true
+        }
+    }
 };
 </script>
 

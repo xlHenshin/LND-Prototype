@@ -60,7 +60,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
     .form{
         padding: 5vw 10vw 5vw 10vw;
