@@ -118,6 +118,7 @@ import SonoroSvg from '../assets/icons/SonoroSvg.vue'
 import EscritosSvg from '../assets/icons/EscritosSvg.vue'
 import { mapStores } from 'pinia';
 import { useAuthenticationStore } from '../stores/authentication';
+import { useUiStore } from '../stores/uiStore.js';
 
 export default {
     components: {
@@ -129,7 +130,7 @@ export default {
         EscritosSvg
     },
     computed: {
-        ...mapStores(useAuthenticationStore),
+        ...mapStores(useAuthenticationStore, useUiStore),
         userIsLogged(){
             return this.authenticationStore.user !== null
             },
@@ -138,6 +139,7 @@ export default {
         }
     },
     async created() {
+        this.uiStore.toggleSidebar(true)
         await this.authenticationStore.authState();
         if(this.userIsLogged){
             try {

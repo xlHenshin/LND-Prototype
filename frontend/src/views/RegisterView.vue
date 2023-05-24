@@ -75,9 +75,9 @@
 </template>
   
 <script>
-import { useAuthenticationStore } from "@/stores/authentication";
 import {mapStores} from 'pinia'
-import { auth } from '../firebase/config'
+import { useAuthenticationStore } from "@/stores/authentication";
+import { useUiStore } from '../stores/uiStore.js';
 
 export default {
     data() {
@@ -91,7 +91,13 @@ export default {
         };
     },
     computed: {
-        ...mapStores(useAuthenticationStore)
+        ...mapStores(useAuthenticationStore, useUiStore),
+        isSidebarExpanded() {
+            return this.uiStore.showSidebar;
+        }
+    },
+    created() {
+        this.uiStore.toggleSidebar(false);
     },
     methods: {
         nextStep() {
@@ -114,7 +120,7 @@ export default {
                 this.step = 2;
             }
         },
-        register() {
+        async register() {
             console.log("SIRVO")
             if (this.selectedCategories.length === 0) {
                 alert("Debes seleccionar al menos una categoría.");
@@ -130,7 +136,10 @@ export default {
                 selectedCategories: this.selectedCategories
             });
 
-            this.authenticationStore.newUserAwait(this.username, this.email, this.password, this.selectedCategories)
+            
+            await this.authenticationStore.newUserAwait(this.username, this.email, this.password, this.selectedCategories)
+            this.uiStore.toggleSidebar(true);
+            this.$router.push('/');
             alert('¡Usuario creado!') 
         },
         checkMaxSelected(event){
@@ -139,7 +148,7 @@ export default {
             }
         }
     },
-    };
+};
 </script>
 
 <style>

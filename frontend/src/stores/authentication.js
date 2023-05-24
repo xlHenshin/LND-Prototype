@@ -29,14 +29,16 @@ export const useAuthenticationStore = defineStore("authentication", {
         },
         signIn(email, password) {
             return signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
+                .then(async (userCredential) => {
                     const user = userCredential.user;
-                    console.log('Logged User: ', user)
+                    console.log('Logged User: ', user);
+                    this.user = user; // Actualizamos el usuario aquí.
+                    await this.getUserData(); // Llamada a getUserData después de la autenticación del usuario
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                alert(error)
+                    alert(error)
                 });
         },
         logOut(){

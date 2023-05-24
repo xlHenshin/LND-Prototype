@@ -7,7 +7,7 @@
       @reset-filters="onResetFilters"
     />
 
-    <div class="recommendation" v-if="authenticationStore.userInfo">
+    <div class="recommendation" v-if="this.userIsLogged">
       <div class="contentTitle">
           <span>Lo mejor para ti</span>
       </div>
@@ -30,9 +30,9 @@
       </div>
     </div>
 
-    <div class="recommendation" v-if="authenticationStore.userInfo">
+    <div class="recommendation" v-if="this.userIsLogged">
       <div class="contentTitle">
-          <span>Lo mejor para ti</span>
+          <span>Te puede gustar</span>
       </div>
       <div class="cards">
         <swiper
@@ -111,6 +111,7 @@
 import { mapStores } from "pinia";
 import { useContentStore } from "@/stores/contentStore";
 import { useAuthenticationStore } from '../stores/authentication';
+import { useUiStore } from '../stores/uiStore.js';
 import ContentFilter from "../components/ContentFilter.vue";
 import RsCard from "../components/cards/RsCard.vue";
 import CrCard from "../components/cards/CrCard.vue";
@@ -120,7 +121,7 @@ import { Pagination, Navigation } from "swiper";
 export default {
 
   computed: {
-    ...mapStores(useContentStore, useAuthenticationStore),
+    ...mapStores(useContentStore, useAuthenticationStore, useUiStore),
     rsContent(){
       return this.contentStore.getRadioSamanContent;
     },
@@ -144,18 +145,19 @@ export default {
   },
 
   async created() {
+    this.uiStore.toggleSidebar(true)
     await this.authenticationStore.authState();
+    this.contentStore.getRsData();
+    this.contentStore.getCrData();
     if(this.userIsLogged){
         try {
             await this.loadUserData();
+            this.recommendations = await this.calculateRecommendations();
+            this.secondaryRecommendations = await this.calculateSecondaryRecommendations();
         } catch (error) {
             console.error('Failed to load user data:', error);
         }
     }
-    this.contentStore.getRsData();
-    this.contentStore.getCrData();
-    this.recommendations = await this.calculateRecommendations();
-    this.secondaryRecommendations = await this.calculateSecondaryRecommendations();
   },
 
   components:{

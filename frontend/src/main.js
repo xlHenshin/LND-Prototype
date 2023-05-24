@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "@popperjs/core";
 import "bootstrap";
 import "@/assets/global.scss";
+import { v4 as uuidv4 } from 'uuid';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -14,6 +15,13 @@ const emitter = createEmitter();
 app.use(pinia);
 app.use(router);
 app.provide('emitter',emitter)
+
+let sessionId = localStorage.getItem('sessionId');
+
+if (!sessionId) {
+    sessionId = uuidv4();
+    localStorage.setItem('sessionId', sessionId);
+}
 
 app.mount("#app");
 

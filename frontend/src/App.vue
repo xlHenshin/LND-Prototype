@@ -1,8 +1,8 @@
 <template>
   <div class="app">
-    <Sidebar class="sidebar" @toggle="handleSidebarToggle"/>
+    <Sidebar v-if="uiStore.showSidebar" class="sidebar"/>
 
-    <div :class="{'main-content': true, 'sidebar-expanded': isSidebarExpanded}">
+    <div class="main-content" :style="{ 'padding-left': contentPadding }">
       <router-view/>
     </div>
   </div>
@@ -10,21 +10,32 @@
 
 <script>
 import Sidebar from "./components/Sidebar.vue";
+import { mapStores } from 'pinia';
+import { useUiStore } from './stores/uiStore.js';
 
 export default {
   components: {
     Sidebar
   },
-  data() {
-    return {
-      isSidebarExpanded: false
-    };
-  },
-  methods: {
-    handleSidebarToggle(expanded) {
-      this.isSidebarExpanded = expanded;
+  computed: {
+    ...mapStores(useUiStore),
+    isSidebarExpanded() {
+      return this.uiStore.isSidebarExpanded;
+    },
+    contentPadding() {
+      if (!this.uiStore.showSidebar) {
+        return '0';
+      }
+      return this.isSidebarExpanded ? 'calc(16vw + 32px)' : 'calc(6vw + 32px)';
     }
-  }
+  },
+  watch: {
+    'uiStore.showSidebar': function(newVal) {
+      if (!newVal) {
+        this.uiStore.isSidebarExpanded = false;
+      }
+    }
+  },
 };
 </script>
 
@@ -40,11 +51,6 @@ export default {
 
 .main-content {
   width: 100%;
-  padding-left: calc(6vw + 32px);
   transition: padding-left 0.2s ease-out;
-}
-
-.sidebar-expanded {
-  padding-left: calc(16vw + 32px);
 }
 </style>

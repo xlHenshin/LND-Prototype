@@ -125,6 +125,7 @@
     import defaultProfilePic from '../assets/images/DefaultUser.png';
     import { mapStores } from 'pinia';
     import { useAuthenticationStore } from '../stores/authentication';
+    import { useUiStore } from '../stores/uiStore.js';
     
     export default {
         components: {
@@ -148,7 +149,7 @@
             };
         },
         computed: {
-            ...mapStores(useAuthenticationStore),
+            ...mapStores(useAuthenticationStore, useUiStore),
             userIsLogged(){
                     return this.authenticationStore.user !== null
                 },
@@ -191,7 +192,7 @@
             },
             ToggleMenu() {
                 this.is_expanded = !this.is_expanded;
-                this.$emit("toggle", this.is_expanded);
+                this.uiStore.toggleSidebarExpanded(!this.uiStore.isSidebarExpanded);
             },
             toggleOptions(){
                 this.optionsVisible = !this.optionsVisible;

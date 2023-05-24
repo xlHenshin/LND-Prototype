@@ -108,6 +108,7 @@
 import { mapStores } from "pinia";
 import { useContentStore } from "@/stores/contentStore";
 import { useAuthenticationStore } from '../stores/authentication';
+import { useUiStore } from '../stores/uiStore.js';
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { Pagination, Navigation } from "swiper";
 import RsCard from "../components/cards/RsCard.vue";
@@ -115,7 +116,7 @@ import ProgramaCard from "../components/cards/ProgramaCard.vue";
 
 export default {
     computed: {
-        ...mapStores(useContentStore, useAuthenticationStore),
+        ...mapStores(useContentStore, useAuthenticationStore, useUiStore),
         topTrendingRsContent() {
             return this.contentStore.getTopTrendingRsContent;
             
@@ -134,6 +135,7 @@ export default {
         }
     },
     async created() {
+        this.uiStore.toggleSidebar(true)
         await this.authenticationStore.authState();
         if(this.userIsLogged){
             try {
