@@ -6,7 +6,7 @@
         </div>
 
         <div class="form__filters">
-            <div class="form__filter">
+            <div class="filter">
                 <h3>Filtra los contenidos por categorías</h3>
                 <select v-model="selectedCategory" @change="onCategoryChange">
                     <option disabled value="">Selecciona una categoría</option>
@@ -20,7 +20,7 @@
                     <option value="Arte, cultura y literatura">Arte, Cultura y Literatura</option>
                 </select>
             </div>
-            <div class="form__filter">
+            <div class="filter">
                 <h3>Ordenar</h3>
                 <select v-model="selectedOrder" @change="onOrderChange">
                     <option disabled value="">Ordenar por...</option>
@@ -30,7 +30,7 @@
                 </select>
             </div>
 
-            <button @click="resetFilters">Reiniciar filtros</button>
+            <button class="resetBtn" @click="resetFilters">Reiniciar filtros</button>
         </div>
 
         
@@ -61,41 +61,65 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+    $notosansmono-fontfamily: 'NotoSansMono', sans-serif;
     .form{
-        padding: 5vw 10vw 5vw 10vw;
+        padding: 5vw 10vw 0 10vw;
 
         &__title{
             display: flex;
             flex-direction: row;
             align-items: baseline;
+            margin-bottom: 2vw;
 
             h1{
-                font-size: 4vw;
+                font-size: 2.5vw;
                 font-weight: 600;
-                margin-bottom: 1.5vw;
                 margin-right: 3vw;
             }
 
             span {
-                font-size: 1.5vw;
+                font-family: $notosansmono-fontfamily;
+                font-size: 1vw;
                 font-weight: normal;
+                color: #6546FC;
             }
         }
 
         &__filters{
             display: flex;
-            flex-direction: row;
-            width: 100%;
-            justify-content: space-between;
-        }
-        &__filter{
-            width: 50%;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-bottom: 4vw;
+                align-items: flex-end;
 
-            h3 {
-                font-weight: 600;
-                font-size: 1vw;
-            }
+                .filter{
+                    margin-right: 6vw;
+
+                    h3{
+                        font-size: 1vw;
+                        font-weight: 600;
+                        margin-bottom: 1vw;
+                    }
+
+                    select{
+                        font-size: 1vw;
+                        width: 15.5vw;
+                        padding: .5vw;
+                        font-weight: 300;
+                        color: #6546FC;
+                        border-color: #6546FC;
+                    }
+                }
+                .resetBtn{
+                    width: 10vw;
+                    height: 3vw;
+                    font-size: 1vw;
+                    padding: .5vw;
+                    font-weight: 600;
+                    border-radius: .5vw;
+                    color: #6546FC;
+                    border-color: #6546FC;
+                }
         }
     }
 

@@ -116,6 +116,8 @@ import CircularSvg from '../assets/icons/CircularSvg.vue'
 import AvSvg from '../assets/icons/AvSvg.vue'
 import SonoroSvg from '../assets/icons/SonoroSvg.vue'
 import EscritosSvg from '../assets/icons/EscritosSvg.vue'
+import { mapStores } from 'pinia';
+import { useAuthenticationStore } from '../stores/authentication';
 
 export default {
     components: {
@@ -125,7 +127,46 @@ export default {
         AvSvg,
         SonoroSvg,
         EscritosSvg
-    }
+    },
+    computed: {
+        ...mapStores(useAuthenticationStore),
+        userIsLogged(){
+            return this.authenticationStore.user !== null
+            },
+        userInfo(){
+            return this.authenticationStore.getUserInfo;
+        }
+    },
+    async created() {
+        await this.authenticationStore.authState();
+        if(this.userIsLogged){
+            try {
+                await this.loadUserData();
+            } catch (error) {
+                console.error('Failed to load user data:', error);
+            }
+        }
+    },
+    methods: {
+        async loadUserData() {
+            return new Promise((resolve, reject) => {
+                if(this.userIsLogged){
+                    this.authenticationStore.getUserData()
+                        .then(() => {
+                            console.log('User info after getUserData: ', this.userInfo);
+                            console.log('User info from store after getUserData: ', this.authenticationStore.getUserInfo);
+                            resolve();
+                        })
+                        .catch((error) => {
+                            console.error('Error cargando datos del usuario:', error);
+                            reject(error);
+                        });
+                } else {
+                    reject('User is not logged in');
+                }
+            });
+        },
+    },
 }
 </script>
 

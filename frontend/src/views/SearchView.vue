@@ -8,15 +8,15 @@
     />
 
     <div class="recommendation" v-if="authenticationStore.userInfo">
-      <h3>Lo mejor para ti</h3>
+      <div class="contentTitle">
+          <span>Lo mejor para ti</span>
+      </div>
       <div class="cards">
         <swiper
           class="swiper"
           :space-between="30"
           :slides-per-view="3"
           :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
         >
           <swiper-slide
             v-for="(content, index) in recommendations"
@@ -31,15 +31,15 @@
     </div>
 
     <div class="recommendation" v-if="authenticationStore.userInfo">
-      <h3>Te podría gustar</h3>
+      <div class="contentTitle">
+          <span>Lo mejor para ti</span>
+      </div>
       <div class="cards">
         <swiper
           class="swiper"
           :space-between="30"
           :slides-per-view="3"
           :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
         >
           <swiper-slide
             v-for="(content, index) in secondaryRecommendations"
@@ -54,16 +54,16 @@
     </div>
 
     <div class="recommendation">
-      <h3>Radio Samán</h3>
-      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+      <div class="recommendationTitle">
+          <span>Radio Samán</span>
+          <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+      </div>
       <div class="cards">
         <swiper
           class="swiper"
           :space-between="30"
           :slides-per-view="3"
           :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
         >
           <swiper-slide
             v-for="content in rsContent"
@@ -80,16 +80,16 @@
     </div>
 
     <div class="recommendation">
-      <h3>Circular</h3>
-      <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+      <div class="recommendationTitle">
+          <span>Circular</span>
+          <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
+      </div>
       <div class="cards">
         <swiper
           class="swiper"
           :space-between="30"
           :slides-per-view="3"
           :free-mode="true"
-          :pagination="{ clickable: true }"
-          :navigation="{ prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' }"
         >
           <swiper-slide
             v-for="content in cContent"
@@ -298,7 +298,60 @@ export default {
     width: 100%;
 
     .recommendation{
-        padding: 0 10vw 4vw 10vw;
+        padding: 0 10vw 0 10vw;
+        margin-bottom: 4vw;
+
+        .recommendationTitle{
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 2vw;
+          span{
+              font-size: 1vw;
+              font-weight: 600;
+              margin-bottom: 1vw;
+              position: relative;
+              padding-bottom: 0.5vw;
+
+              &::after {
+                  content: "";
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  height: .125vw; // Este será el grosor de tu línea. Ajusta según necesites.
+                  background-color: #6546FC;
+              }
+          }
+          h2{
+              font-weight: 600;
+              font-size: 1.875vw;
+          }
+        }
+
+        .contentTitle{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2vw;
+            width: 100%;
+
+            span{
+                font-size: 1vw;
+                font-weight: 600;
+                margin-bottom: 1vw;
+                position: relative;
+                padding-bottom: 0.5vw;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: .125vw; // Este será el grosor de tu línea. Ajusta según necesites.
+                    background-color: #6546FC;
+                }
+            }
+        }
       }
   }
   .routerlink{

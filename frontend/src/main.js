@@ -6,7 +6,7 @@ import "swiper/swiper-bundle.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "@popperjs/core";
 import "bootstrap";
-import "./assets/global.scss";
+import "@/assets/global.scss";
 
 const app = createApp(App);
 const pinia = createPinia();

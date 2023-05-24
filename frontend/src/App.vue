@@ -39,11 +39,12 @@ export default {
 }
 
 .main-content {
-  margin-left: calc(6vw + 32px);
-  transition: margin-left 0.2s ease-out;
+  width: 100%;
+  padding-left: calc(6vw + 32px);
+  transition: padding-left 0.2s ease-out;
 }
 
 .sidebar-expanded {
-  margin-left: calc(16vw + 32px);
+  padding-left: calc(16vw + 32px);
 }
 </style>

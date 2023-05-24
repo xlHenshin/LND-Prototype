@@ -19,9 +19,24 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'NotoSansMono';
+  src: url('../assets/fonts/NotoSansMono-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansMono';
+  src: url('../assets/fonts/NotoSansMono-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
 $eina02-fontfamily: 'Eina02', sans-serif;
+$notosansmono-fontfamily: 'NotoSansMono', sans-serif;
   
-  /* A continuación, puedes agregar estilos globales para utilizar la fuente */
-  body {
-    font-family: $eina02-fontfamily;
-  }
+/* A continuación, puedes agregar estilos globales para utilizar la fuente */
+body {
+  font-family: $eina02-fontfamily;
+}

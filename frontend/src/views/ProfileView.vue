@@ -61,8 +61,15 @@ export default {
         };
     },
 
-    async mounted() {
-        await this.loadUserData();
+    async created() {
+        await this.authenticationStore.authState();
+        if(this.userIsLogged){
+            try {
+                await this.loadUserData();
+            } catch (error) {
+                console.error('Failed to load user data:', error);
+            }
+        }
     },
     watch: {
         userInfo: {
@@ -123,16 +130,26 @@ export default {
         },
 
         async loadUserData() {
-            if(this.userIsLogged){
-                this.isImageLoading = true;
-                try {
-                    await this.authenticationStore.getUserData();
-                } catch (error) {
-                    console.error('Error cargando datos del usuario:', error);
-                } finally {
-                    this.isImageLoading = false;
+            return new Promise((resolve, reject) => {
+                if(this.userIsLogged){
+                    this.isImageLoading = true;
+                    this.authenticationStore.getUserData()
+                        .then(() => {
+                            this.userInfoLoaded = true;
+                            this.isImageLoading = false;
+                            console.log('User info after getUserData: ', this.userInfo);
+                            console.log('User info from store after getUserData: ', this.authenticationStore.getUserInfo);
+                            resolve();
+                        })
+                        .catch((error) => {
+                            console.error('Error cargando datos del usuario:', error);
+                            this.isImageLoading = false;
+                            reject(error);
+                        });
+                } else {
+                    reject('User is not logged in');
                 }
-            }
+            });
         },
     }
 }
