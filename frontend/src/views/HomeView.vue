@@ -5,7 +5,7 @@
                 <h1>Laboratorio de<br/>Narrativas Digitales</h1>
                 <p>Conoce el nuevo espacio que tenemos para ti y<br/>conéctate con los contenidos exclusivos del laboratorio.</p>
             </div>
-            <router-link class="hero__button" to="/search">
+            <router-link class="hero__button" to="/search/todos">
                 <span class="text">Ir a los contenidos</span>
             </router-link>
         </section>

@@ -112,24 +112,21 @@ export const useContentStore = defineStore('content', {
             console.log("Searching for related content for content with ID:", contentId, category);
             const collections = ["/contenidos/rs/contenidos_rs", "/contenidos/c/contenidos_c"];
             let relatedContent = [];
-        
+            
             for (const collectionPath of collections) {
                 const contentCollection = collection(db, collectionPath);
-                const queryContent = query(contentCollection, where('categoria', '==', category), where('id', '!=', contentId));
-                const querySnapshot = await getDocs(queryContent);
-        
+                const querySnapshot = await getDocs(contentCollection);
+            
                 if (!querySnapshot.empty) {
                     const docs = querySnapshot.docs.map(doc => doc.data());
-                    relatedContent = relatedContent.concat(docs);
+                    const filteredDocs = docs.filter(doc => doc.categoria.some(cat => category.includes(cat)) && doc.id !== contentId);
+                    relatedContent = relatedContent.concat(filteredDocs);
                 }
             }
-        
-            // Limitamos los resultados
             relatedContent = relatedContent.slice(0, limit);
-            
-            console.log(relatedContent)
             return relatedContent;
         },
+        
 
         async getCrData(){
             const collectionRef = collection(db, "/contenidos/c/contenidos_c");

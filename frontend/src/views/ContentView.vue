@@ -7,6 +7,28 @@
             <CrVideoView v-else-if="currentContent && currentContent.medio==='c' && currentContent.tipo==='audiovisual'" :content="currentContent" @like="handleLike" @share="handleShare"/>
             <div v-else>Cargando contenido...</div>
         </section>
+        <section class="recommendation" v-if="relatedContentSwiper">
+            <div class="contentTitle">
+                <span>Contenido relacionado</span>
+            </div>
+            <div class="cards">
+                <swiper
+                class="swiper"
+                :space-between="30"
+                :slides-per-view="3"
+                :free-mode="true"
+                >
+                <swiper-slide
+                    v-for="(content, index) in relatedContent"
+                    :key="index"
+                >
+                    <router-link :to="`/content/${content.id}`">
+                    <component :is="getCardComponent(content)" :content="content" />
+                    </router-link>
+                </swiper-slide>
+                </swiper>
+            </div>
+        </section>
     </main>
 </template>
 
@@ -22,12 +44,14 @@ import CrTextView from "../components/detailviews/circularviews/CrTextView.vue";
 import CrVideoView from "../components/detailviews/circularviews/CrVideoView.vue";
 import RsCard from "../components/cards/RsCard.vue";
 import CrCard from "../components/cards/CrCard.vue";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
     data() {
         return {
             currentContent: null,
-            //relatedContent: [],
+            relatedContent: [],
+            relatedContentSwiper: false,
             userId: '', 
         }
     },
@@ -47,6 +71,8 @@ export default {
         CrVideoView,
         RsCard,
         CrCard,
+        Swiper,
+        SwiperSlide
     },
     async created() {
         this.uiStore.toggleSidebar(true)
@@ -84,7 +110,9 @@ export default {
             this.interactionStore.updateContentInteraction(this.currentContent.id, this.currentContent.medio, 'view');
         }
 
-        //this.relatedContent = await this.contentStore.getRelatedContent(contentId, this.currentContent.categoria);
+        this.relatedContent = await this.contentStore.getRelatedContent(contentId, this.currentContent.categoria);
+        this.relatedContentSwiper = true;
+        console.log('Related content:', this.relatedContent);   
 
         window.addEventListener('beforeunload', this.recordInteraction);
     },
@@ -152,5 +180,66 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.main{
+    width: 100%;
+
+    .recommendation{
+        padding: 0 10vw 0 10vw;
+        margin-bottom: 4vw;
+
+        .recommendationTitle{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2vw;
+            span{
+                font-size: 1vw;
+                font-weight: 600;
+                margin-bottom: 1vw;
+                position: relative;
+                padding-bottom: 0.5vw;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: .125vw; // Este será el grosor de tu línea. Ajusta según necesites.
+                    background-color: #6546FC;
+                }
+            }
+            h2{
+                font-weight: 600;
+                font-size: 1.875vw;
+            }
+            }
+
+            .contentTitle{
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 2vw;
+                width: 100%;
+
+                span{
+                    font-size: 1vw;
+                    font-weight: 600;
+                    margin-bottom: 1vw;
+                    position: relative;
+                    padding-bottom: 0.5vw;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: .125vw; // Este será el grosor de tu línea. Ajusta según necesites.
+                        background-color: #6546FC;
+                    }
+                }
+            }
+        }
+}
 
 </style>

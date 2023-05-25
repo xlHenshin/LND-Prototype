@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="recommendation" v-if="showAudiovisualSwipers && type === 'audiovisual'">
+    <div class="recommendation" v-if="showAudiovisualSwipers">
       <div class="contentTitle">
           <span>Cinemática</span>
       </div>
@@ -112,6 +112,29 @@
         >
           <swiper-slide
             v-for="(content, index) in crContentByType"
+            :key="index"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+
+    <div class="recommendation" v-if="showCrWrittenSwipers">
+      <div class="contentTitle">
+          <span>Textos de Circular</span>
+      </div>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+        >
+          <swiper-slide
+            v-for="(content, index) in crWrittenContent"
             :key="index"
           >
             <router-link :to="`/content/${content.id}`">
@@ -225,6 +248,7 @@ export default {
       this.showAudiovisualSwipers = false;
       this.showEpisodiosSwipers = false;
       this.showRadiodramasSwipers = false;
+      this.showCrWrittenSwipers = false;
     } else {
       this.showAllSwipers = false;
     }
@@ -246,22 +270,32 @@ export default {
       immediate: true,
       handler(newValue) {
         switch(newValue){
-          case 'sonoros':
+          case 'sonoro':
             this.showAudiovisualSwipers = false;
             this.showEpisodiosSwipers = true;
             this.showRadiodramasSwipers = true;
+            this.showCrWrittenSwipers = false;
             this.showAllSwipers = false;
             break;
           case 'audiovisual':
             this.showAudiovisualSwipers = true;
             this.showEpisodiosSwipers = false;
             this.showRadiodramasSwipers = false;
+            this.showCrWrittenSwipers = false;
+            this.showAllSwipers = false;
+            break;
+          case 'escrito':
+            this.showAudiovisualSwipers = false;
+            this.showEpisodiosSwipers = false;
+            this.showRadiodramasSwipers = false;
+            this.showCrWrittenSwipers = true;
             this.showAllSwipers = false;
             break;
           case 'todos':
             this.showAudiovisualSwipers = false;
             this.showEpisodiosSwipers = false;
             this.showRadiodramasSwipers = false;
+            this.showCrWrittenSwipers = false;
             this.showAllSwipers = true;
             break;
         }
@@ -392,6 +426,7 @@ export default {
       this.showAudiovisualSwipers = false;
       this.showEpisodiosSwipers = false;
       this.showRadiodramasSwipers = false;
+      this.showCrWrittenSwipers = false;
       
       if (type === 'sonoro') {
         const contentByType = await this.contentStore.getContentByType(type);
@@ -406,6 +441,10 @@ export default {
         this.contentByType = await this.contentStore.getContentByType(type);
         console.log("Content By Type (audiovisual):", this.contentByType); // Log the fetched content for 'audiovisual'
         this.showAudiovisualSwipers = this.contentByType.length > 0;
+      } else if (type === 'escrito') {
+        this.crWrittenContent = await this.contentStore.getContentByType(type);
+        console.log("Content By Type (escrito):", this.crWrittenContent); // Log the fetched content for 'escrito'
+        this.showCrWrittenSwipers = this.crWrittenContent.length > 0;
       } else if (type === 'todos') {
         this.showAllSwipers = true;
       }
@@ -414,6 +453,7 @@ export default {
       console.log("Show Audiovisual Swipers:", this.showAudiovisualSwipers);
       console.log("Show Episodios Swipers:", this.showEpisodiosSwipers);
       console.log("Show Radiodramas Swipers:", this.showRadiodramasSwipers);
+      console.log("Show Cr Written Swipers:", this.showCrWrittenSwipers);
       console.log("Show All Swipers:", this.showAllSwipers);
     }
 
@@ -434,6 +474,8 @@ export default {
       showAudiovisualSwipers: false,
       showEpisodiosSwipers: false,
       showRadiodramasSwipers: false,
+      showCrWrittenSwipers: false,
+      crWrittenContent: [],
       rsContentByType: [],
       crContentByType: [],
     };
