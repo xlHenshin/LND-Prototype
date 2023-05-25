@@ -223,8 +223,24 @@ export const useContentStore = defineStore('content', {
             }
         },
 
-        setSelectedType(type) {
-            this.selectedType = type;
+        async getContentByType(type){
+            console.log("Searching for content with type:", type);
+            const collections = ["/contenidos/rs/contenidos_rs", "/contenidos/c/contenidos_c"];
+            let contentByType = [];
+        
+            for (const collectionPath of collections) {
+                const contentCollection = collection(db, collectionPath);
+                const queryContent = query(contentCollection, where('tipo', '==', type));
+                const querySnapshot = await getDocs(queryContent);
+        
+                if (!querySnapshot.empty) {
+                    const docs = querySnapshot.docs.map(doc => doc.data());
+                    contentByType = contentByType.concat(docs);
+                }
+            }
+
+            console.log(contentByType)
+            return contentByType;
         },
 
         filterContentByType(contentArray) {

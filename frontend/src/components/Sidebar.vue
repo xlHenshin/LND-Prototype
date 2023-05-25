@@ -20,19 +20,19 @@
             <div class="content">
                 <h3>CONTENIDO</h3>
                 <div class="content__items">
-                    <router-link class="button" to="/search">
+                    <router-link class="button" to="/search/todos">
                         <TodoSvg class="menuIcon"/>
                         <span class="text">Todos</span>
                     </router-link>
-                    <router-link class="button" to="/search">
+                    <router-link class="button" :to="`/search/audiovisual`">
                         <AvSvg class="menuIcon"/>
                         <span class="text">Audiovisuales</span>
                     </router-link>
-                    <router-link class="button" to="/search">
+                    <router-link class="button" :to="`/search/sonoro`">
                         <SonoroSvg class="menuIcon"/>
                         <span class="text">Sonoros</span>
                     </router-link>
-                    <router-link class="button" to="/search">
+                    <router-link class="button" :to="`/search/escrito`">
                         <EscritosSvg class="menuIcon"/>
                         <span class="text">Escritos</span>
                     </router-link>

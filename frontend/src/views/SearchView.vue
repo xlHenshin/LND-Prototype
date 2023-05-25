@@ -7,7 +7,7 @@
       @reset-filters="onResetFilters"
     />
 
-    <div class="recommendation" v-if="this.userIsLogged">
+    <div class="recommendation" v-if="this.userIsLogged && showAllSwipers">
       <div class="contentTitle">
           <span>Lo mejor para ti</span>
       </div>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="recommendation" v-if="this.userIsLogged">
+    <div class="recommendation" v-if="this.userIsLogged && showAllSwipers">
       <div class="contentTitle">
           <span>Te puede gustar</span>
       </div>
@@ -53,7 +53,76 @@
       </div>
     </div>
 
-    <div class="recommendation">
+    <div class="recommendation" v-if="showAudiovisualSwipers && type === 'audiovisual'">
+      <div class="contentTitle">
+          <span>Cinemática</span>
+      </div>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+        >
+          <swiper-slide
+            v-for="(content, index) in contentByType"
+            :key="index"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+
+    <div class="recommendation" v-if="showEpisodiosSwipers">
+      <div class="contentTitle">
+          <span>Episodios</span>
+      </div>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+        >
+          <swiper-slide
+            v-for="(content, index) in rsContentByType"
+            :key="index"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+
+    <div class="recommendation" v-if="showRadiodramasSwipers">
+      <div class="contentTitle">
+          <span>Radiodramas</span>
+      </div>
+      <div class="cards">
+        <swiper
+          class="swiper"
+          :space-between="30"
+          :slides-per-view="3"
+          :free-mode="true"
+        >
+          <swiper-slide
+            v-for="(content, index) in crContentByType"
+            :key="index"
+          >
+            <router-link :to="`/content/${content.id}`">
+              <component :is="getCardComponent(content)" :content="content" />
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+
+    <div class="recommendation" v-if="showAllSwipers">
       <div class="recommendationTitle">
           <span>Radio Samán</span>
           <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
@@ -79,7 +148,7 @@
 
     </div>
 
-    <div class="recommendation">
+    <div class="recommendation" v-if="showAllSwipers">
       <div class="recommendationTitle">
           <span>Circular</span>
           <h2 v-if="isShowingNewContent">Nuevos episodios</h2>
@@ -142,10 +211,23 @@ export default {
     userInfo(){
       return this.authenticationStore.getUserInfo;
     },
+    type() {
+      console.log(this.$route.params.type)
+      return this.$route.params.type;
+    },
   },
 
   async created() {
     this.uiStore.toggleSidebar(true)
+    const type = this.$route.params.type;
+    if(type === 'todos'){
+      this.showAllSwipers = true;
+      this.showAudiovisualSwipers = false;
+      this.showEpisodiosSwipers = false;
+      this.showRadiodramasSwipers = false;
+    } else {
+      this.showAllSwipers = false;
+    }
     await this.authenticationStore.authState();
     this.contentStore.getRsData();
     this.contentStore.getCrData();
@@ -158,6 +240,34 @@ export default {
             console.error('Failed to load user data:', error);
         }
     }
+  },
+  watch: {
+    type: {
+      immediate: true,
+      handler(newValue) {
+        switch(newValue){
+          case 'sonoros':
+            this.showAudiovisualSwipers = false;
+            this.showEpisodiosSwipers = true;
+            this.showRadiodramasSwipers = true;
+            this.showAllSwipers = false;
+            break;
+          case 'audiovisual':
+            this.showAudiovisualSwipers = true;
+            this.showEpisodiosSwipers = false;
+            this.showRadiodramasSwipers = false;
+            this.showAllSwipers = false;
+            break;
+          case 'todos':
+            this.showAudiovisualSwipers = false;
+            this.showEpisodiosSwipers = false;
+            this.showRadiodramasSwipers = false;
+            this.showAllSwipers = true;
+            break;
+        }
+        this.fetchContentByType();
+      },
+    },
   },
 
   components:{
@@ -274,11 +384,40 @@ export default {
       this.contentStore.updateContentList(this.selectedCategory, this.selectedOrder);
       this.isShowingNewContent = true;
     },
-    onFilterType(type) {
-      console.log('Received filter-type event:', type);
-      this.selectedType = type;
-      // Lógica para aplicar los filtros según el tipo seleccionado
-    },
+    async fetchContentByType() {
+      const type = this.$route.params.type;
+      console.log("Route param type:", type); // Log the route parameter type
+
+      // reset
+      this.showAudiovisualSwipers = false;
+      this.showEpisodiosSwipers = false;
+      this.showRadiodramasSwipers = false;
+      
+      if (type === 'sonoro') {
+        const contentByType = await this.contentStore.getContentByType(type);
+        console.log("Content By Type (sonoros):", contentByType); // Log the fetched content for 'sonoros'
+        
+        this.rsContentByType = contentByType.filter(content => content.medio === 'rs');
+        this.crContentByType = contentByType.filter(content => content.medio === 'c');
+        
+        this.showEpisodiosSwipers = this.rsContentByType.length > 0;
+        this.showRadiodramasSwipers = this.crContentByType.length > 0;
+      } else if (type === 'audiovisual') {
+        this.contentByType = await this.contentStore.getContentByType(type);
+        console.log("Content By Type (audiovisual):", this.contentByType); // Log the fetched content for 'audiovisual'
+        this.showAudiovisualSwipers = this.contentByType.length > 0;
+      } else if (type === 'todos') {
+        this.showAllSwipers = true;
+      }
+
+      // Log the status of the swipers
+      console.log("Show Audiovisual Swipers:", this.showAudiovisualSwipers);
+      console.log("Show Episodios Swipers:", this.showEpisodiosSwipers);
+      console.log("Show Radiodramas Swipers:", this.showRadiodramasSwipers);
+      console.log("Show All Swipers:", this.showAllSwipers);
+    }
+
+
   },
   data() {
     return {
@@ -290,6 +429,13 @@ export default {
       isShowingNewContent: true,
       recommendations: [],
       secondaryRecommendations: [],
+      contentByType: [],
+      showAllSwipers: false,
+      showAudiovisualSwipers: false,
+      showEpisodiosSwipers: false,
+      showRadiodramasSwipers: false,
+      rsContentByType: [],
+      crContentByType: [],
     };
   }
 }
